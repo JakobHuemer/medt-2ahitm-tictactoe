@@ -1,0 +1,90 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: url("/assets/img/ico/crosshair-icon.png") 9 9, crosshair;
+}
+
+body {
+    overflow: hidden;
+
+}
+
+.wrapper {
+    min-height: 100vh;
+    width: 100vw;
+    background: orange;
+    display: flex;
+}
+
+.canvas {
+    position: relative;
+    aspect-ratio: 11 / 7;
+    height: min(calc(90vw * 7 / 11), 90vh);
+    margin-inline: auto;
+    margin-block: auto;
+    max-height: 100vh;
+    max-width: 100vw;
+
+    & > * {
+
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        z-index: 50;
+
+        &#top {
+            z-index: 100;
+
+            filter: drop-shadow(0 0 20px black);
+        }
+
+        & > * {
+            overflow: hidden;
+            aspect-ratio: 1;
+            image-rendering: pixelated;
+            position: absolute;
+            scale: 1.01;
+            transform-origin: center;
+        }
+    }
+
+}
+
+.bg-tiles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    image-rendering: pixelated;
+    height: 100vh;
+    width: 100vw;
+}
+
+.piston {
+    /*offset-anchor: 100% 100%;*/
+    position: absolute;
+
+    isolation: isolate;
+
+
+    aspect-ratio: 1 / 2;
+
+
+    & > * {
+        width: 100%;
+        position: absolute;
+        z-index: 10;
+        top: 50%;
+    }
+
+    &[extended=true] .piston-extender {
+        top: 0;
+    }
+
+    & .piston-base {
+        position: absolute;
+        top: unset;
+        bottom: 0;
+        z-index: 20;
+    }
+}
