@@ -1,9 +1,10 @@
 import Block, { Observer, Piston } from './models/block.js';
+import config from './config.js';
 
 
 export const starterMap = [
-    new Block('AREP', 'repeating_command_block_front', 0, 3),
-    new Block('BREP', 'repeating_command_block_front', 10, 3),
+    new Block('AREP', 'repeating_command_block_front', 0, 3, 2),
+    new Block('BREP', 'repeating_command_block_front', 10, 3, 2),
 
     new Piston('A01', 1, 4),
     new Piston('A02', 0, 1, 1),
@@ -54,5 +55,20 @@ export const starterMap = [
     new Observer('OB3', 4, 5, 0, 0),
     new Observer('OB4', 7, 3, 0, 0),
     new Observer('OB5', 7, 2, 0, 0),
+
+    new Block('AN1', config.player1Block, 1, 3),
+    new Block('AN2', config.player1Block, 1, 2),
+    new Block('AN3', config.player1Block, 1, 1),
+    new Block('AN4', config.player1Block, 2, 1),
+    new Block('AN5', config.player1Block, 3, 1),
+    new Block('AN6', config.player1Block, 3, 2),
+
+    new Block('BN1', config.player2Block, 9, 3),
+    new Block('BN2', config.player2Block, 9, 4),
+    new Block('BN3', config.player2Block, 9, 5),
+    new Block('BN4', config.player2Block, 8, 5),
+    new Block('BN5', config.player2Block, 7, 5),
+    new Block('BN6', config.player2Block, 7, 4),
+
 ];
 
