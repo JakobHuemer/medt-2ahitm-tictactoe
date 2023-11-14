@@ -1,6 +1,6 @@
 export default {
     volume: 0.1,
-    tickSpeed: 5,
+    tickSpeed: 20,
     TICKS_PER_SECOND: 20,
     pistonTickDuration: 3,
     canvasHeight: 7,

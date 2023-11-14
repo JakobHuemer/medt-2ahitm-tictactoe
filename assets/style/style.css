@@ -1,8 +1,24 @@
+@font-face {
+    font-family: 'Minecraft-Regular';
+    src:url('/assets/font/Minecraft-Regular.ttf.woff') format('woff'),
+    url('/assets/font/Minecraft-Regular.ttf.svg#Minecraft-Regular') format('svg'),
+    url('/assets/font/Minecraft-Regular.ttf.eot'),
+    url('/assets/font/Minecraft-Regular.ttf.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     cursor: url("/assets/img/ico/crosshair-icon.png") 9 9, crosshair;
+    font-family: "Minecraft-Regular", "DejaVu Sans", sans-serif;
+}
+
+:root {
+    color-scheme: dark light;
 }
 
 body {
@@ -15,14 +31,25 @@ body {
     width: 100vw;
     background: orange;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+h1 {
+    z-index: 10000;
+    align-self: center;
+    text-align: center;
+    font-size: 400%;
 }
 
 .canvas {
     position: relative;
     aspect-ratio: 11 / 7;
-    height: min(calc(90vw * 7 / 11), 90vh);
-    margin-inline: auto;
-    margin-block: auto;
+    height: min(calc(85vw * 7 / 11), 85vh);
+    /*margin-inline: auto;*/
+    /*margin-block: auto;*/
     max-height: 100vh;
     max-width: 100vw;
 
@@ -86,5 +113,23 @@ body {
         top: unset;
         bottom: 0;
         z-index: 20;
+    }
+}
+
+.game-field {
+    z-index: 1000;
+
+    .hover-block {
+        opacity: 0;
+
+        transition: opacity .1s;
+    }
+
+    .hover-block:hover {
+        opacity: 0.6;
+    }
+
+    .hover-block-disabled {
+        cursor: url("/assets/img/ico/crosshair-icon_not-allowed.png") 9 9, crosshair;
     }
 }

@@ -1,5 +1,6 @@
 import Block from './models/block.js';
 import Animator from './animator.js';
+import config from './config.js';
 
 let id = 1;
 
@@ -8,18 +9,20 @@ export default class Canvas {
     blocks = new Map();
     topLayer;
     bottomLayer;
+    gameField;
     animator;
 
-    constructor(topLayer, bottomLayer) {
+    constructor(topLayer, bottomLayer, gameField) {
 
         this.animator = new Animator(this);
 
-        if (!topLayer || !bottomLayer) {
-            throw Error('No bottom or lop layer specified');
+        if (!topLayer || !bottomLayer || !gameField) {
+            throw Error('No bottom, top or gameField layer specified');
         }
 
         this.topLayer = topLayer;
         this.bottomLayer = bottomLayer;
+        this.gameField = gameField
     }
 
     add(toAdd) {
@@ -30,10 +33,15 @@ export default class Canvas {
             return;
         }
 
-        console.log(toAdd.pos);
-
+        // console.log("TO ADD: ", toAdd.pos)
+        // console.log(toAdd.pos);
 
         if (!toAdd instanceof Block || this.blocks.has(toAdd.pos)) {
+            if (!toAdd instanceof Block) {
+                throw new Error('toAdd musst be of type Block');
+            } else {
+                throw new Error('This pos already exists');
+            }
             // console.log(toAdd)
             // console.log(this.blocks.has(toAdd.pos));
             // console.log('RETURN');
@@ -53,8 +61,10 @@ export default class Canvas {
 
         if (toAdd.lvl === 1) {
             this.topLayer.appendChild(toAdd.element);
-        } else {
+        } else if (toAdd.lvl === 0) {
             this.bottomLayer.appendChild(toAdd.element);
+        } else {
+            this.gameField.appendChild(toAdd.element);
         }
 
     }
@@ -91,11 +101,11 @@ export default class Canvas {
     }
 
     toLayer(item, layer) {
-        console.log('ITEM', item);
+        // console.log('ITEM', item);
         if (typeof item === 'string') {
-            console.log('AWDAWDAWDAWDAWD');
+            // console.log('AWDAWDAWDAWDAWD');
             item = this.getByPos(item);
-            console.log(item);
+            // console.log(item);
         }
 
         if (!item) {
@@ -121,5 +131,53 @@ export default class Canvas {
     }
 
 
+    /**
+     *
+     * @param player {'A' | 'B'}
+     * @param fieldId {number} - 0 - 8
+     */
+    feedNewBlock(player, fieldId) {
+        // console.log("FEED NEW BLOCKEDY BLOCK BLOCK -----------------------------------------------------------")
+        // console.log(this.blocks)
+        let fieldBlockPos = this.fieldToPos(fieldId);
 
+        let temp = this.getByPos(player + 'N6');
+        this.blocks.delete(player + "N6");
+        id++;
+        temp.pos = 'PLACED' + fieldId;
+        temp.element.classList.add('placed-' + fieldId);
+        this.blocks.set('PLACED' + fieldId, temp);
+
+        for (let i = 6; i > 1; i--) {
+            this.blocks.set(player + "N" + i, this.blocks.get(player + "N" + (i-1)))
+            this.blocks.get(player + 'N' + i).pos = player + 'N' + i;
+            // console.log(this.blocks.get(player + "N" + (i)))
+            // console.log("LOOP END ----------------------")
+        }
+        // this.removeBlock('AN1');
+        // console.log(this.blocks)
+        this.blocks.delete(player + "N1")
+
+        this.add(new Block(player + 'N1', player === 'A' ? config.player1Block : config.player2Block, player === "A" ? 1 : 9, 3));
+
+        // console.log("DONE FEEDING NEW BLOCKEDY BLOCK BLOCK -----------------------------------------------------------")
+        // console.log(this.blocks)
+    }
+
+
+    fieldToPos(fieldId) {
+        let temp = {
+            0: ['AN1', 'BU9'],
+            1: ['AN2', 'BU8'],
+            2: ['AN3', 'BU7'],
+            3: ['AN4', 'BU6'],
+            4: ['AN5', 'BU5'],
+            5: ['AN6', 'BU4'],
+            6: ['AN7', 'BU3'],
+            7: ['AN8', 'BU2'],
+            8: ['AN9', 'BU1'],
+        }
+
+        return temp[fieldId];
+    }
 };

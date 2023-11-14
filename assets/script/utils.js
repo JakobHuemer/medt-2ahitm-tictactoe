@@ -39,6 +39,7 @@ export async function play(filepath) {
     try {
         const audio = new Audio(filepath);
         audio.volume = config.volume
+        audio.playbackRate = config.tickSpeed / config.TICKS_PER_SECOND;
         await audio.play();
     } catch (error) {
         if (error.name === 'NotAllowedError') {

@@ -22,7 +22,15 @@ export default (playerName1, playerName2) => {
 
     let whoHasTurn = 1; // id
 
+
+    /**
+     *
+     * @param field {number} - 0 - 8
+     * @return {boolean}
+     */
+
     function place(field) {
+
 
         if (map[field] === 0) {
             map[field] = whoHasTurn;
@@ -30,7 +38,7 @@ export default (playerName1, playerName2) => {
             if (checkWinner(whoHasTurn)) {
                 emitter.dispatchEvent(new CustomEvent('win', {
                     detail: {
-                        player: whoHasTurn === 1 ? player1 : player2,
+                        winner: whoHasTurn === 1 ? player1 : player2,
                     },
                 }));
                 emitter = new EventTarget();
