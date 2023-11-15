@@ -92,9 +92,9 @@ export default class Animator extends EventTarget {
                 // console.log(itemAnimationName);
                 // console.log("------------------------")
 
-                console.log("----------------------------------------")
-                console.log(player);
-                console.log(toAnimatePlayer);
+                // console.log("----------------------------------------")
+                // console.log(player);
+                // console.log(toAnimatePlayer);
                 if (player === 'A' && toAnimatePlayer === 'A') {
                     itemName = transferredName.replace(/A%/g, "A");
                 } else if (player === 'A' && toAnimatePlayer === 'B') {
@@ -105,9 +105,8 @@ export default class Animator extends EventTarget {
                     itemName = transferredName.replace(/B%/g, 'A');
                 }
 
-
                 const item = this.canvas.getByPos(itemName);
-                console.log('itemName:', itemName);
+                // console.log('itemName:', itemName);
 
                 if (item) {
                     if (checked) {

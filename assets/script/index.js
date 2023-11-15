@@ -28,50 +28,6 @@ canvas.add(maps.starterMap);
 canvas.add(maps.gameField);
 document.querySelector('h1').innerHTML = config.player1Block + ' is on the move!';
 
-// setTimeout(() => {
-//
-//
-//     canvas.animator.animate(animations[0], 'A', 'main');
-//     canvas.animator.animate(animations[4], 'A', 'test');
-//
-//     canvas.animator.addEventListener('animationdone', (e) => {
-//         console.log("THIS SIDHIAHDIAHWDWADHAWDHIHDAW")
-//         console.log("THIS SIDHIAHDIAHWDWADHAWDHIHDAW")
-//         console.log("THIS SIDHIAHDIAHWDWADHAWDHIHDAW")
-//         console.log("THIS SIDHIAHDIAHWDWADHAWDHIHDAW")
-//         console.log("THIS SIDHIAHDIAHWDWADHAWDHIHDAW")
-//         console.log(e.detail.animationName);
-//         if (e.detail.animationName === 'test') {
-//
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             console.log('EWNDNDNANWDN');
-//             canvas.feedNewBlock('A', 4);
-//         }
-//     });
-// }, 2000);
-
-
-// canvas.animator.animate(animations.feedNewBlock, "B", "test")
-// canvas.animator.animate(animations.U8, 'B', 'test');
-
-
 
 maps.gameField.forEach(block => {
     block.setPlayer('A');
@@ -82,52 +38,56 @@ maps.gameField.forEach(block => {
 function clickListener(buttonEvent) {
     maps.gameField.forEach(block => {
         block.element.removeEventListener('click', clickListener);
+        block.setDisabled();
     });
 
-    let fieldId = buttonEvent.target.getAttribute('pos').substring(1);
+    let fieldId = buttonEvent.target.getAttribute('pos').substring(1); // 1 - 9
 
-    console.log('CURRENT PLAYER:', game.getWhoHasTurn() === 1 ? 'A' : 'B');
+    let translatedFieldId = game.getWhoHasTurn() === 1 ? fieldId : 10 - parseInt(fieldId);
+    console.log('Translated field:', translatedFieldId);
 
-
+    console.log('Player: ' + (game.getWhoHasTurn() === 1 ? 'B' : 'A'));
     canvas.animator.animate(animations.feedNewBlock, game.getWhoHasTurn() === 1 ? 'A' : 'B', 'base');
-    canvas.animator.animate(animations['U' + fieldId], game.getWhoHasTurn() === 1 ? 'A' : 'B', 'main');
+    canvas.animator.animate(animations['U' + translatedFieldId], game.getWhoHasTurn() === 1 ? 'A' : 'B', 'main');
 
-    console.log(fieldId);
-    console.log(canvas.blocks);
     canvas.getByPos('H' + fieldId).setDisabled();
-    maps.gameField.forEach(block => {
-        if (block.element !== buttonEvent.target) {
-            block.setPlayer(game.getWhoHasTurn() === 1 ? 'B' : 'A');
-        }
-    });
-    console.log(canvas.blocks);
 
-    document.querySelector('h1').innerHTML = (game.getWhoHasTurn() === 1 ? config.player2Block : config.player1Block) + ' is on the move!';
 
     canvas.animator.addEventListener('animationdone', e1 => {
-        console.log("ANIMATION DONE WITH: " + e1.detail.animationName)
+
         if (e1.detail.animationName === 'main') {
             canvas.feedNewBlock(game.getWhoHasTurn() === 1 ? 'A' : 'B', fieldId);
-            console.log("EVENENNENVENNENNEVEVEVEV")
-            console.log(game.getWhoHasTurn())
-            game.place(parseInt(fieldId) - 1);
-            console.log(game.getWhoHasTurn())
+            document.querySelector('h1').innerHTML = (game.getWhoHasTurn() === 1 ? config.player2Block : config.player1Block) + ' is on the move!';
 
-            maps.gameField.forEach(block => {
-                if (block._element !== buttonEvent.target) {
-                    block.element.addEventListener('click', clickListener);
+            game.place(parseInt(fieldId) - 1);
+            // console.log(game.map);
+
+            for (let i = 0; i < 9; i++) {
+                let elem = canvas.getByPos('H' + (i + 1));
+                if (game.map[i] === 0) {
+                    elem.setPlayer(game.getWhoHasTurn() === 1 ? 'A' : 'B');
+                    elem.element.addEventListener('click', clickListener);
+                } else {
+                    elem.setDisabled();
+                    elem.element.removeEventListener('click', clickListener);
+                    // elem.element.removeEventListener('click', this);
                 }
-            });
+            }
         }
     });
-
 }
+
 
 game.emitter.addEventListener('win', e => {
     console.log(e.detail);
-    document.querySelector('h1').innerHTML = e.details.winner.name + ' won the game!';
+    document.querySelector('h1').innerHTML = e.detail.winner.name + ' won the game!';
+    game.newGame();
 });
 
 
-
+game.emitter.addEventListener("tie", e => {
+    console.log(e);
+    document.querySelector('h1').innerHTML = 'It\'s a tie!';
+    game.newGame();
+})
 

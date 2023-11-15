@@ -14,7 +14,7 @@ export default (playerName1, playerName2) => {
         id: 2,
     };
 
-    const map = [
+    let map = [
         0, 0, 0,
         0, 0, 0,
         0, 0, 0,
@@ -44,6 +44,11 @@ export default (playerName1, playerName2) => {
                 emitter = new EventTarget();
             }
             whoHasTurn = rev(whoHasTurn);
+
+            if (map.filter(item => item === 0).length === 0) {
+                emitter.dispatchEvent(new CustomEvent('tie'));
+                emitter = new EventTarget();
+            }
 
             return true;
         } else {
@@ -75,6 +80,17 @@ export default (playerName1, playerName2) => {
         return id === 1 ? 2 : 1;
     }
 
+
+    function newGame() {
+        map = [
+            0, 0, 0,
+            0, 0, 0,
+            0, 0, 0,
+        ]
+
+        whoHasTurn = 1;
+    }
+
     return {
         emitter,
         player1,
@@ -82,6 +98,8 @@ export default (playerName1, playerName2) => {
         place,
         rev,
         getWhoHasTurn,
+        map,
+        newGame,
     };
 
 }

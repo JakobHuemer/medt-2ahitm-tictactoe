@@ -9,8 +9,8 @@ function getSupportedAudio() {
 
     let formats = {
         mp3: 'audio/mpeg',
-        mp4: 'audio/mp4',
         wav: 'audio/wav',
+        ogg: 'audio/ogg',
     };
 
     for (let format in formats) {

@@ -1,12 +1,13 @@
 import Block from './models/block.js';
 import Animator from './animator.js';
 import config from './config.js';
+import { play } from './utils.js';
 
 let id = 1;
 
 
 export default class Canvas {
-    blocks = new Map();
+    blocks = [];
     topLayer;
     bottomLayer;
     gameField;
@@ -22,7 +23,24 @@ export default class Canvas {
 
         this.topLayer = topLayer;
         this.bottomLayer = bottomLayer;
-        this.gameField = gameField
+        this.gameField = gameField;
+    }
+
+    deleteBlock(toDelete) {
+
+        if (!toDelete) {
+            return false;
+        }
+        console.log('LENGTH NOW:', this.blocks.length);
+
+        let temp = this.blocks.filter(block => {
+            // console.log('comparing: ' + toDelete + ' === ' + block._pos + ': ' + (toDelete !== block._pos));
+            return toDelete !== block._pos;
+        });
+
+        this.blocks = temp;
+
+        console.log('LENGTH AFTER:', this.blocks.length);
     }
 
     add(toAdd) {
@@ -36,7 +54,7 @@ export default class Canvas {
         // console.log("TO ADD: ", toAdd.pos)
         // console.log(toAdd.pos);
 
-        if (!toAdd instanceof Block || this.blocks.has(toAdd.pos)) {
+        if (!toAdd instanceof Block || !!this.getByPos(toAdd.pos)) {
             if (!toAdd instanceof Block) {
                 throw new Error('toAdd musst be of type Block');
             } else {
@@ -57,7 +75,7 @@ export default class Canvas {
         toAdd.id = id;
         toAdd.element.id = `block-${ id }`;
 
-        this.blocks.set(toAdd.pos, toAdd);
+        this.blocks.push(toAdd);
 
         if (toAdd.lvl === 1) {
             this.topLayer.appendChild(toAdd.element);
@@ -71,21 +89,34 @@ export default class Canvas {
 
 
     getByPos(checkPos) {
-        if (this.blocks.get(checkPos)) {
-            return this.blocks.get(checkPos);
+
+        const foundBlock = this.blocks.find(block => block.pos === checkPos);
+        if (foundBlock) {
+            return foundBlock;
         }
 
-        for (const entry of this.blocks.entries()) {
-            if (Array.isArray(entry[0])) {
-                for (const item of entry[0]) {
-                    if (item === checkPos) {
-                        return entry[1];
+        this.blocks.forEach(block => {
+            if (Array.isArray(block.pos)) {
+                for (const singlePos of block.pos) {
+                    if (singlePos === checkPos) {
+                        return block;
                     }
                 }
-            } else if (entry[0] === checkPos) {
-                return entry[1];
+            } else if (block.pos === checkPos) {
+                return block;
             }
-        }
+        });
+        // for (const entry of this.blocks.entries()) {
+        //     if (Array.isArray(entry[0])) {
+        //         for (const item of entry[0]) {
+        //             if (item === checkPos) {
+        //                 return entry[1];
+        //             }
+        //         }
+        //     } else if (entry[0] === checkPos) {
+        //         return entry[1];
+        //     }
+        // }
     }
 
     removeBlock(checkPos) {
@@ -122,9 +153,9 @@ export default class Canvas {
 
 
         if (item.lvl === 1) {
-            this.topLayer.appendChild(item.element)
+            this.topLayer.appendChild(item.element);
         } else {
-            this.bottomLayer.appendChild(item.element)
+            this.bottomLayer.appendChild(item.element);
         }
 
         item.element.setAttribute('level', layer);
@@ -137,31 +168,90 @@ export default class Canvas {
      * @param fieldId {number} - 0 - 8
      */
     feedNewBlock(player, fieldId) {
-        // console.log("FEED NEW BLOCKEDY BLOCK BLOCK -----------------------------------------------------------")
-        // console.log(this.blocks)
-        let fieldBlockPos = this.fieldToPos(fieldId);
 
-        let temp = this.getByPos(player + 'N6');
-        this.blocks.delete(player + "N6");
-        id++;
-        temp.pos = 'PLACED' + fieldId;
-        temp.element.classList.add('placed-' + fieldId);
-        this.blocks.set('PLACED' + fieldId, temp);
+        this.getByPos(player + 'N6').pos = 'PLACED' + fieldId;
 
-        for (let i = 6; i > 1; i--) {
-            this.blocks.set(player + "N" + i, this.blocks.get(player + "N" + (i-1)))
-            this.blocks.get(player + 'N' + i).pos = player + 'N' + i;
-            // console.log(this.blocks.get(player + "N" + (i)))
-            // console.log("LOOP END ----------------------")
+        // this.getByPos(player + 'N5').element.classList.replace(/5/g, '6');
+        // this.getByPos(player + 'N5').pos = player + 'N6';
+        // console.log(this.getByPos(player + 'N6'));
+        //
+        // this.getByPos(player + 'N4').element.classList.replace(/4/g, '5');
+        // this.getByPos(player + 'N4').pos = player + 'N5';
+        // console.log(this.getByPos(player + 'N5'));
+        //
+        // this.getByPos(player + 'N3').element.classList.replace(/3/g, '4');
+        // this.getByPos(player + 'N3').pos = player + 'N4';
+        // console.log(this.getByPos(player + 'N4'));
+        //
+        // this.getByPos(player + 'N2').element.classList.replace(/2/g, '3');
+        // this.getByPos(player + 'N2').pos = player + 'N3';
+        // console.log(this.getByPos(player + 'N3'));
+        //
+        // this.getByPos(player + 'N1').element.classList.replace(/1/g, '2');
+        // this.getByPos(player + 'N1').pos = player + 'N2';
+        // console.log(this.getByPos(player + 'N2'));
+
+        // for (let i = 1; i < 6; i++) {
+        //     this.getByPos(player + 'N' + i)
+        //         .element.classList.replace(player + 'NNN' + i,
+        //         player + 'NNN' + (i + 1));
+        //     this.getByPos(player + 'N' + i).pos = player + 'N' + (i + 1);
+        //     console.log(this.getByPos(player + 'N' + (i + 1)).pos);
+        //     console.log(this.getByPos(player + 'N' + (i + 1)).element.classList);
+        //     console.log('-----------------------------------');
+        // }
+
+        for (let i = 5; i > 0; i--) {
+            this.getByPos(player + 'N' + i).delete();
+            this.removeBlock(player + 'N' + i);
+            this.deleteBlock(player + 'N' + i);
         }
-        // this.removeBlock('AN1');
-        // console.log(this.blocks)
-        this.blocks.delete(player + "N1")
 
-        this.add(new Block(player + 'N1', player === 'A' ? config.player1Block : config.player2Block, player === "A" ? 1 : 9, 3));
 
-        // console.log("DONE FEEDING NEW BLOCKEDY BLOCK BLOCK -----------------------------------------------------------")
-        // console.log(this.blocks)
+        const blocksToAdd = [
+            [3, 1],
+            [2, 1],
+            [1, 1],
+            [1, 2],
+            [1, 3],
+        ];
+
+        let index = 5;
+        console.log(this.blocks);
+
+        for (const coords of blocksToAdd) {
+            this.add(
+                new Block(player + 'N' + index,
+                    player === 'A' ? config.player1Block : config.player2Block,
+                    player === 'A' ? coords[0] : config.canvasWidth - 1 - coords[0],
+                    player === 'A' ? coords[1] : config.canvasHeight - 1 - coords[1],
+                ),
+            );
+
+            index--;
+        }
+
+
+        const newBlockArrays = [];
+
+        let newLastBlock = new Block(player + 'N6',
+            player === 'A' ? config.player1Block : config.player2Block,
+            player === 'A' ? 3 : 7,
+            player === 'A' ? 2 : 4,
+        );
+
+        this.add(newLastBlock);
+
+        let firstBlock = new Block(player + 'N1',
+            player === 'A' ? config.player1Block : config.player2Block,
+            player === 'A' ? 1 : 9,
+            3,
+        );
+
+        firstBlock.element.classList.add(player + 'NNN1');
+
+        // this.add(firstBlock);
+        console.log(firstBlock);
     }
 
 
@@ -176,7 +266,7 @@ export default class Canvas {
             6: ['AN7', 'BU3'],
             7: ['AN8', 'BU2'],
             8: ['AN9', 'BU1'],
-        }
+        };
 
         return temp[fieldId];
     }

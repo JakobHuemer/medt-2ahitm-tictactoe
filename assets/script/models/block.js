@@ -17,7 +17,6 @@ export default class Block extends EventTarget {
     constructor(pos, blockType, x = 0, y = 0, facing = 0, lvl = 1, element) {
         super();
 
-
         if (!pos) {
             throw new Error('No pos provided!');
         }
@@ -267,10 +266,57 @@ export class Piston extends Block {
 
 
 export class HoverBlock extends Block {
+
+    errorAnimation = null;
+
     constructor(pos, x, y, facing, element) {
         super(pos, 'barrier', x, y, facing, 2, element);
         this._element.classList.add('hover-block');
         this._element.setAttribute('pos', pos);
+
+        this._element.addEventListener('click', () => {
+            if (this._element.classList.contains('hover-block-disabled')) {
+                this.errorAnimation = this._element.animate([
+                    {
+                        transform: 'translateX(0%)',
+                    },
+                    {
+                        transform: 'translateX(-3%)',
+                    },
+                    {
+                        transform: 'translateX(4%)',
+                    },
+                    {
+                        transform: 'translateX(-5%)',
+                    },
+
+                    {
+                        transform: 'translateX(3.5%)',
+                    },
+
+                    {
+                        transform: 'translateX(-3%)',
+                    },
+
+                    {
+                        transform: 'translateX(2%)',
+                    },
+
+                    {
+                        transform: 'translateX(-2%)',
+                    },
+
+                    {
+                        transform: 'translateX(0%)',
+                    },
+
+                ], {
+                    duration: 300,
+                    iterations: 1,
+                    fill: 'forwards',
+                });
+            }
+        });
     }
 
     setDisabled() {
@@ -283,6 +329,9 @@ export class HoverBlock extends Block {
      * @param player {'A'|'B'}
      */
     setPlayer(player) {
+        if (this.errorAnimation) {
+            this.errorAnimation.cancel()
+        }
         let texture;
 
         if (player === 'A') {
@@ -294,6 +343,5 @@ export class HoverBlock extends Block {
         this._element.classList.remove('hover-block-disabled');
         this._element.src = `/assets/img/${ texture }.png`;
     }
-
 
 }

@@ -213,7 +213,6 @@ const U7 = {
                 item.powerFor();
             },
         },
-
         10: {
             'A%N6': (item, player) => {
                 if (player === 'A')
