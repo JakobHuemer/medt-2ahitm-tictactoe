@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Minecraft-Regular';
-    src:url('/assets/font/Minecraft-Regular.ttf.woff') format('woff'),
+    src: url('/assets/font/Minecraft-Regular.ttf.woff') format('woff'),
     url('/assets/font/Minecraft-Regular.ttf.svg#Minecraft-Regular') format('svg'),
     url('/assets/font/Minecraft-Regular.ttf.eot'),
     url('/assets/font/Minecraft-Regular.ttf.eot?#iefix') format('embedded-opentype');
@@ -15,6 +15,12 @@
     box-sizing: border-box;
     cursor: url("/assets/img/ico/crosshair-icon.png") 9 9, crosshair;
     font-family: "Minecraft-Regular", "DejaVu Sans", sans-serif;
+    caret-shape: block;
+    caret: orange;
+}
+
+h1, h2, h3, h4, h5, h6, span, p {
+    cursor: url("/assets/img/ico/text-cursor-2.png") 9 12, text;
 }
 
 :root {
@@ -24,6 +30,15 @@
 body {
     overflow: hidden;
 
+}
+
+.noselect {
+    user-select: none; /* Non-prefixed version, currently */
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
 }
 
 .wrapper {
@@ -119,6 +134,7 @@ h1 {
 .game-field {
     z-index: 1000;
 
+
     .hover-block {
         opacity: 0;
 
@@ -132,4 +148,153 @@ h1 {
     .hover-block-disabled {
         cursor: url("/assets/img/ico/crosshair-icon_not-allowed.png") 9 9, crosshair;
     }
+
 }
+
+
+.ui-button {
+    position: relative;
+
+    z-index: 10000;
+    background: url("/assets/img/gui/button.png") center / contain no-repeat;
+    aspect-ratio: 10 / 1;
+    image-rendering: pixelated;
+
+    display: grid;
+    place-items: center;
+    width: 500px;
+
+    isolation: isolate;
+
+    cursor: url("/assets/img/ico/cursor.png") 0 0, default;
+
+    & * {
+        cursor: url("/assets/img/ico/cursor.png") 0 0, default;
+    }
+
+    & > span {
+
+        pointer-events: none;
+
+        z-index: 100;
+        cursor: url("/assets/img/ico/cursor.png") 0 0, default;
+        font-size: 1.4rem;
+
+        text-shadow: 2px 2px 0 black;
+
+
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
+    }
+
+
+    &:hover {
+        background: url("/assets/img/gui/button-active.png") center / contain no-repeat;
+    }
+
+    &.menu-slider {
+
+
+        background: url("/assets/img/gui/button-slider.png") center / contain no-repeat;
+
+
+        &:hover .menu-slider-slider::-moz-range-thumb {
+            z-index: -1;
+            background: url("/assets/img/gui/button-slider-slider-active.png") center / contain no-repeat;
+        }
+
+        .menu-slider-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            position: absolute;
+            left: 0;
+
+            background: url("/assets/img/gui/button-slider.png") center / contain no-repeat;
+
+            &:focus {
+                outline: none;
+
+
+                &::-moz-range-thumb,
+                &::-webkit-slider-thumb {
+                    background: url("/assets/img/gui/button-slider-slider-active.png") center / contain no-repeat;
+                }
+            }
+
+
+            &::-moz-range-thumb,
+            &::-webkit-slider-thumb {
+
+                -webkit-appearance: none;
+                appearance: none;
+
+                background: red;
+                height: 100%;
+                aspect-ratio: 8 / 20;
+                width: unset;
+                border: none;
+                border-radius: unset;
+                background: url("/assets/img/gui/button-slider-slider.png") center / contain no-repeat;
+            }
+        }
+    }
+}
+
+.menu-input {
+
+    z-index: 10000;
+    aspect-ratio: 10 / 1;
+    outline: none;
+    border: none;
+    background: url("/assets/img/gui/button-slider.png") center / contain no-repeat;
+
+    cursor: url("/assets/img/ico/text-cursor.png") 9 12, text;
+    caret-shape: underscore;
+
+    isolation: isolate;
+
+    position: relative;
+
+    & * {
+        cursor: url("/assets/img/ico/text-cursor.png") 9 12, text;
+
+        caret-shape: underscore;
+    }
+
+    .menu-input-autocomplete {
+        width: 100%;
+        /*background: red;*/
+        pointer-events: none;
+        opacity: .6;
+        font-size: 1.2rem;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        padding-inline: 1rem;
+
+    }
+
+    .menu-input-field {
+
+        width: 500px;
+        background: transparent;
+
+        padding-inline: 1rem;
+        font-size: 1.2rem;
+        height: 100%;
+        border: none;
+        outline: none;
+
+
+        &:focus {
+            outline: none;
+            border: none;
+        }
+
+    }
+}
+

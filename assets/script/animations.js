@@ -1,6 +1,3 @@
-import { play } from './utils.js';
-
-
 const feedNewBlock = {
     animationTime: 25,
     frames: {

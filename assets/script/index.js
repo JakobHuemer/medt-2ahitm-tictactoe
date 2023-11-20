@@ -3,6 +3,9 @@ import config from './config.js';
 import maps from './maps.js';
 import animations from './animations.js';
 import Game from './game.js';
+import Ui from './ui.js';
+import MenuButton, { MenuButtonCycle, MenuSlider } from './models/menubutton.js';
+import InputField from './models/inputfield.js';
 
 
 const canvasElement = document.querySelector('.canvas');
@@ -24,10 +27,27 @@ onResize();
 
 const canvas = new Canvas(document.querySelector('#top'), document.querySelector('#bottom'), document.querySelector('.game-field'));
 const game = Game(config.player1Block, config.player2Block);
-canvas.add(maps.starterMap);
-canvas.add(maps.gameField);
-document.querySelector('h1').innerHTML = config.player1Block + ' is on the move!';
+// canvas.add(maps.starterMap);
+// canvas.add(maps.gameField);
+// document.querySelector('h1').innerHTML = game.player1.name + ' is on the move!';
 
+const UI = new Ui()
+
+let map = new Map();
+
+map.set("Mommy", 1)
+map.set("Daddya", 2)
+map.set("Blibeiblabla", 3)
+
+const tempButton = new MenuButtonCycle('Output', map, "testingOption");
+document.querySelector(".wrapper").appendChild(tempButton.element)
+
+const tempButtonSlider = new MenuSlider('Size: %v%', "size", 1, 40, 1);
+document.querySelector('.wrapper').appendChild(tempButtonSlider.element);
+
+const inputField = new InputField('testingSomeOtherOption', 'Player1', ["concrete", "orange", "purple", "cat", "cell", "console"]);
+// inputField.autocomplete("something")
+document.querySelector(".wrapper").appendChild(inputField.element)
 
 maps.gameField.forEach(block => {
     block.setPlayer('A');
@@ -57,7 +77,7 @@ function clickListener(buttonEvent) {
 
         if (e1.detail.animationName === 'main') {
             canvas.feedNewBlock(game.getWhoHasTurn() === 1 ? 'A' : 'B', fieldId);
-            document.querySelector('h1').innerHTML = (game.getWhoHasTurn() === 1 ? config.player2Block : config.player1Block) + ' is on the move!';
+            document.querySelector('h1').innerHTML = (game.getWhoHasTurn() === 1 ? game.player2.name : game.player1.name) + ' is on the move!';
 
             game.place(parseInt(fieldId) - 1);
             // console.log(game.map);
@@ -82,6 +102,7 @@ game.emitter.addEventListener('win', e => {
     console.log(e.detail);
     document.querySelector('h1').innerHTML = e.detail.winner.name + ' won the game!';
     game.newGame();
+    document.querySelector(".game-field").remove()
 });
 
 
@@ -89,5 +110,6 @@ game.emitter.addEventListener("tie", e => {
     console.log(e);
     document.querySelector('h1').innerHTML = 'It\'s a tie!';
     game.newGame();
+    document.querySelector(".game-field").remove()
 })
 

@@ -11,4 +11,8 @@ export default {
     blockFileExtension: '.png',
     player1Block: 'blue_concrete',
     player2Block: 'yellow_concrete',
+
+//     minecraft loading screen
+//     https://www.youtube.com/watch?v=Mxlttu5r6qM
+
 };

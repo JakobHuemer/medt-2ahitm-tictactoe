@@ -54,6 +54,13 @@ export default class Block extends EventTarget {
         this._element.style.transform = `rotate(${ this._facing * 90 }deg)`;
 
         this._element.style.zIndex = 4 + this._lvl + '';
+        this._element.classList.add('noselect');
+        this._element.setAttribute('draggable', false);
+        this._element.onerror = () => {
+            if (this._element instanceof HTMLImageElement) {
+                this._element.src = "/assets/img/missing_texture.png"
+            }
+        }
         // console.log(pos)
     }
 
@@ -276,6 +283,7 @@ export class HoverBlock extends Block {
 
         this._element.addEventListener('click', () => {
             if (this._element.classList.contains('hover-block-disabled')) {
+                play("anvil-land")
                 this.errorAnimation = this._element.animate([
                     {
                         transform: 'translateX(0%)',
