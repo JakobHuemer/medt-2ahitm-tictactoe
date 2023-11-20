@@ -228,7 +228,6 @@ export class Piston extends Block {
         this._element.style.width = (parseInt(this._element.style.width) * 2).toString();
         this._element.style.transformOrigin = '50% 75%';
 //                                                                                                                              duration of one tick in ms
-        console.log();
         this._element.querySelector('.piston-extender').style.transition = `top ${ config.TICKS_PER_SECOND / config.tickSpeed * (1000 / config.tickSpeed) * config.pistonTickDuration }ms linear`;
 
     }

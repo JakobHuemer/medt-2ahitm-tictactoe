@@ -1,9 +1,9 @@
 @font-face {
     font-family: 'Minecraft-Regular';
-    src: url('/assets/font/Minecraft-Regular.ttf.woff') format('woff'),
-    url('/assets/font/Minecraft-Regular.ttf.svg#Minecraft-Regular') format('svg'),
-    url('/assets/font/Minecraft-Regular.ttf.eot'),
-    url('/assets/font/Minecraft-Regular.ttf.eot?#iefix') format('embedded-opentype');
+    src: url('/assets/font/minecraft/Minecraft-Regular.ttf.woff') format('woff'),
+    url('/assets/font/minecraft/Minecraft-Regular.ttf.svg#Minecraft-Regular') format('svg'),
+    url('/assets/font/minecraft/Minecraft-Regular.ttf.eot'),
+    url('/assets/font/minecraft/Minecraft-Regular.ttf.eot?#iefix') format('embedded-opentype');
     font-weight: normal;
     font-style: normal;
 }
@@ -283,6 +283,7 @@ h1 {
         width: 500px;
         background: transparent;
 
+
         padding-inline: 1rem;
         font-size: 1.2rem;
         height: 100%;
@@ -298,3 +299,89 @@ h1 {
     }
 }
 
+
+.ui-wrapper {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+
+    /*background: purple;*/
+    image-rendering: pixelated;
+    cursor: url("/assets/img/ico/cursor.png") 0 0, default;
+
+    & * {
+        cursor: url("/assets/img/ico/cursor.png") 0 0, default;
+    }
+
+    .ui-page {
+        height: 100%;
+
+        display: grid;
+        place-items: center;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+
+        transform: translate(-50%, -50%);
+
+        .menu-title {
+            position: absolute;
+            left: 50%;
+            top: 10%;
+            transform: translateX(-50%);
+            font-size: 200%;
+        }
+
+        .ui-inner-wrapper {
+            /*background: green;*/
+            display: flex;
+            flex-direction: column;
+            place-items: center;
+            gap: 1rem;
+
+            transform: translateY(2vh);
+
+            &.wrapper-main-menu {
+                /*background: pink;*/
+            }
+        }
+    }
+}
+
+
+.ui-textures-element {
+    height: 9rem;
+
+    display: grid;
+    grid-template-rows: 1.2rem 1fr 1fr;
+    grid-template-columns: 1fr 9rem;
+    place-items: center;
+
+
+    & > *:nth-child(1) {
+        justify-self: left;
+        grid-area: 0 / 0 / 1 / 1;
+        margin-left: .2rem;
+    }
+
+    & > *:nth-child(2) {
+        grid-area: 2 / 1 / 3 / 2;
+    }
+
+    & > *:nth-child(3) {
+        grid-area: 3 / 1 / 4 / 2;
+    }
+
+    & > img {
+        height: 80%;
+        grid-area: 1 / 2 / 4 / 3;
+        image-rendering: pixelated;
+
+        display: block;
+        margin: auto;
+        outline: 3px solid black;
+    }
+}

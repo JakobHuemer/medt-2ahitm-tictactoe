@@ -5,15 +5,33 @@ export default class InputField {
     configSetOption;
     element;
     _autocompletionData;
+    inputCallback;
+    changeCallback;
 
-    constructor(configSetOption, placeHolder, autocompletionData) {
+    changeCallbackTimeout;
+
+    constructor(configSetOption, placeHolder, autocompletionData, inputCallback, changeCallback) {
         this.configSetOption = configSetOption;
         this._autocompletionData = autocompletionData;
+
+
+        if (typeof inputCallback === 'function')
+            this.inputCallback = inputCallback
+        else
+            this.inputCallback = () => {}
+
+
+        if (typeof changeCallback === "function")
+            this.changeCallback = changeCallback
+        else
+            this.changeCallback = () => {}
+
 
 
         this.element = document.createElement('div');
         this.input = document.createElement('input');
         this.input.type = 'text';
+
         if (placeHolder !== null && placeHolder !== undefined) {
             this.input.placeholder = placeHolder;
         }
@@ -43,6 +61,11 @@ export default class InputField {
 
             this.autocomplete();
 
+            if (!!this.changeCallbackTimeout) {
+                clearTimeout(this.changeCallbackTimeout)
+            }
+            this.changeCallbackTimeout = setTimeout(this.changeCallback, 100);
+            this.inputCallback(this.input.value);
         });
 
         this.element.addEventListener('keydown', e => {
@@ -59,7 +82,6 @@ export default class InputField {
         this._value = value;
         this.input.value = value;
         config[this.configSetOption] = this._value;
-        console.log(config[this.configSetOption]);
     }
 
 

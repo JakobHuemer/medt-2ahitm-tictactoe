@@ -6,6 +6,7 @@ import Game from './game.js';
 import Ui from './ui.js';
 import MenuButton, { MenuButtonCycle, MenuSlider } from './models/menubutton.js';
 import InputField from './models/inputfield.js';
+import { HomePage, SettingsPage, TexturesPage } from './pages.js';
 
 
 const canvasElement = document.querySelector('.canvas');
@@ -20,7 +21,6 @@ function onResize() {
     const yOffset = boundings.top % regularTileSize;
 
     bgTiles.style.background = `url(/assets/img/${ config.backgroundBlock + config.blockFileExtension }) ${ xOffset }px ${ yOffset }px / ${ regularTileSize }px repeat`;
-    console.log(regularTileSize);
 }
 
 onResize();
@@ -33,21 +33,21 @@ const game = Game(config.player1Block, config.player2Block);
 
 const UI = new Ui()
 
-let map = new Map();
+UI.addPage('homepage', new HomePage(UI).element);
+UI.addPage("settings", new SettingsPage(UI).element)
+UI.addPage("textures", new TexturesPage(UI).element)
+UI.show('homepage');
 
-map.set("Mommy", 1)
-map.set("Daddya", 2)
-map.set("Blibeiblabla", 3)
+document.body.appendChild(UI.element);
 
-const tempButton = new MenuButtonCycle('Output', map, "testingOption");
-document.querySelector(".wrapper").appendChild(tempButton.element)
+// document.querySelector(".wrapper").appendChild(tempButton.element)
 
 const tempButtonSlider = new MenuSlider('Size: %v%', "size", 1, 40, 1);
-document.querySelector('.wrapper').appendChild(tempButtonSlider.element);
+// document.querySelector('.wrapper').appendChild(tempButtonSlider.element);
 
 const inputField = new InputField('testingSomeOtherOption', 'Player1', ["concrete", "orange", "purple", "cat", "cell", "console"]);
 // inputField.autocomplete("something")
-document.querySelector(".wrapper").appendChild(inputField.element)
+// document.querySelector(".wrapper").appendChild(inputField.element)
 
 maps.gameField.forEach(block => {
     block.setPlayer('A');

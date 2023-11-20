@@ -24,7 +24,7 @@ function getSupportedAudio() {
 
 
 export async function testAudio(path) {
-    await play(path)
+    await play(path);
 }
 
 
@@ -32,13 +32,13 @@ export async function testAudio(path) {
  * @param {string} filepath - The path from the assets/audio folder without the file extension
  */
 export async function play(filepath) {
-    filepath = '/assets/audio/' + filepath + "." + getSupportedAudio();
+    filepath = '/assets/audio/' + filepath + '.' + getSupportedAudio();
 
     // console.log("playing: " + filepath)
 
     try {
         const audio = new Audio(filepath);
-        audio.volume = config.volume
+        audio.volume = config.volume;
         audio.playbackRate = config.tickSpeed / config.TICKS_PER_SECOND;
         await audio.play();
     } catch (error) {
@@ -46,4 +46,12 @@ export async function play(filepath) {
             alert('Please allow audio for a better user experience!');
         }
     }
+}
+
+export function createElementFromHTML(htmlString) {
+    let div = document.createElement('div');
+    div.innerHTML = htmlString.trim();
+
+    // Change this to div.childNodes to support multiple top-level nodes.
+    return div.firstChild;
 }
