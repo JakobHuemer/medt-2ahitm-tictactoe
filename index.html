@@ -11,8 +11,20 @@
     <link rel="stylesheet" href="assets/style/style.css">
 </head>
 <body>
+<div class="ui-loading-screen">
+    <div class="header">
+        <img src="/assets/img/gui/tictactoe-logo-tiny.png" alt="Logo">
+        <h1>tIC tAC tOe</h1>
+    </div>
+    <div class="progress-bar-wrapper">
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+    </div>
+</div>
+
 <div class="wrapper">
-    <h1></h1>
+    <h1 class="canvas-title"></h1>
     <div class="bg-tiles"></div>
     <div class="canvas">
         <div class="game-field"></div>
@@ -21,6 +33,8 @@
     </div>
 
 </div>
+
+<div class="loader"></div>
 
 </body>
 </html>

@@ -16,6 +16,11 @@ export default class MenuButton extends EventTarget {
             <span class="ui-button-content">${ content }</span>
         `;
 
+
+        if (config.darkMode) {
+            this.element.classList.add('dark');
+        }
+
         this.element.addEventListener('mousedown', (e) => {
             if (soundOnClick) {
                 play('click');
@@ -50,7 +55,7 @@ export class MenuButtonCycle extends MenuButton {
     constructor(content, options, configSetOption, callback) {
 
         if (Object.keys(options).length === 0) {
-            console.log(options)
+            console.log(options);
             throw new Error('Options musst not be of size 0');
         }
 
@@ -74,18 +79,13 @@ export class MenuButtonCycle extends MenuButton {
 
 
         if (config[configSetOption] !== null && config[configSetOption] !== undefined) {
-            console.log("Already Exists")
             let tempIndex = 0;
             this.value = Object.keys(options).find(k => {
-                console.log("K", options[k])
-                console.log("TEST", config[configSetOption])
                 tempIndex++;
                 return options[k] == config[configSetOption];
-            })
+            });
 
-            console.log('tempIndex', tempIndex);
 
-            console.log(this.value)
             this.currentIndex = tempIndex - 1;
         } else {
             this.value = Object.keys(options)[0];
@@ -120,10 +120,15 @@ export class MenuSlider extends MenuButton {
      * @param from {number}
      * @param to {number}
      * @param callback
+     * @param inputCallback
      * @param multiplier
      */
-    constructor(content, configSetOption, from, to, callback, multiplier = 1) {
-        super(' ', () => {}, false);
+    constructor(content, configSetOption, from, to, callback = () => {
+    }, inputCallback = () => {
+    }, multiplier = 1
+    ) {
+        super(' ', () => {
+        }, false);
 
 
         this.startValue = from;
@@ -156,14 +161,14 @@ export class MenuSlider extends MenuButton {
             this.computedOutput = this.content.replace(/%v/g, this.value);
             play('click');
 
-            if (typeof callback === 'function') {
-                callback();
-            }
+            callback();
         });
 
         this.sliderElement.addEventListener('input', () => {
             this.value = this.sliderElement.value;
+            config[configSetOption] = this.value * this.multiplier;
             this.computedOutput = this.content.replace(/%v/g, this.value);
+            inputCallback();
         });
     }
 

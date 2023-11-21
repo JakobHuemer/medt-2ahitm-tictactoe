@@ -6,13 +6,40 @@ import Game from './game.js';
 import Ui from './ui.js';
 import MenuButton, { MenuButtonCycle, MenuSlider } from './models/menubutton.js';
 import InputField from './models/inputfield.js';
-import { HomePage, SettingsPage, TexturesPage } from './pages.js';
+import { HomePage, SettingsPage, AppearancePage, EscapeMenuPage } from './pages.js';
+import { loadUI, play, preloadImages } from './utils.js';
 
+let soundTracks = [
+    'MiceOnVenus',
+    'Minecraft',
+    'Minecraft',
+    'SubwooferLullaby',
+];
+
+async function playBackgroundMusic() {
+    let newSoundTrack = "soundtracks/SubwooferLullaby";
+    // let newSoundTrack = "soundtracks/" + soundTracks[Math.floor(Math.random() * soundTracks.length)];
+    play(newSoundTrack, "musicVolume", playBackgroundMusic)
+}
+
+playBackgroundMusic()
+
+// play('soundtracks/Minecraft');
+
+// preloadElements.forEach(pre => fetch(pre));
+
+
+if (config.darkMode) {
+    document.querySelector('.ui-loading-screen').classList.add('dark');
+    document.querySelector('.ui-loading-screen .progress-bar').classList.add('dark');
+}
 
 const canvasElement = document.querySelector('.canvas');
 const bgTiles = document.querySelector('.bg-tiles');
 
 addEventListener('resize', onResize);
+
+let UI = loadUI();
 
 function onResize() {
     const boundings = canvasElement.getBoundingClientRect();
@@ -21,31 +48,44 @@ function onResize() {
     const yOffset = boundings.top % regularTileSize;
 
     bgTiles.style.background = `url(/assets/img/${ config.backgroundBlock + config.blockFileExtension }) ${ xOffset }px ${ yOffset }px / ${ regularTileSize }px repeat`;
+
+    UI.setBackground(config.backgroundBlock, regularTileSize, xOffset, yOffset);
+
 }
 
 onResize();
 
 const canvas = new Canvas(document.querySelector('#top'), document.querySelector('#bottom'), document.querySelector('.game-field'));
 const game = Game(config.player1Block, config.player2Block);
-// canvas.add(maps.starterMap);
-// canvas.add(maps.gameField);
-// document.querySelector('h1').innerHTML = game.player1.name + ' is on the move!';
+canvas.add(maps.starterMap);
+canvas.add(maps.gameField);
+document.querySelector('h1.canvas-title').innerHTML = game.player1.name + ' is on the move!';
 
-const UI = new Ui()
+// const UI = new Ui()
+//
+// UI.addPage('homepage', new HomePage(UI).element);
+// UI.addPage("settings", new SettingsPage(UI).element)
+// UI.addPage("appearance", new AppearancePage(UI).element)
+// UI.addPage('escapemenu', new EscapeMenuPage(UI).element);
+// UI.show('homepage');
 
-UI.addPage('homepage', new HomePage(UI).element);
-UI.addPage("settings", new SettingsPage(UI).element)
-UI.addPage("textures", new TexturesPage(UI).element)
-UI.show('homepage');
 
-document.body.appendChild(UI.element);
+function reloadUiForIndex() {
+    UI = loadUI();
+    UI.addEventListener('reloadUI', reloadUiForIndex);
+    onResize();
+}
+
+UI.addEventListener('reloadUI', reloadUiForIndex);
+
+
 
 // document.querySelector(".wrapper").appendChild(tempButton.element)
 
-const tempButtonSlider = new MenuSlider('Size: %v%', "size", 1, 40, 1);
+const tempButtonSlider = new MenuSlider('Size: %v%', 'size', 1, 40, 1);
 // document.querySelector('.wrapper').appendChild(tempButtonSlider.element);
 
-const inputField = new InputField('testingSomeOtherOption', 'Player1', ["concrete", "orange", "purple", "cat", "cell", "console"]);
+const inputField = new InputField('testingSomeOtherOption', 'Player1', ['concrete', 'orange', 'purple', 'cat', 'cell', 'console']);
 // inputField.autocomplete("something")
 // document.querySelector(".wrapper").appendChild(inputField.element)
 
@@ -77,7 +117,7 @@ function clickListener(buttonEvent) {
 
         if (e1.detail.animationName === 'main') {
             canvas.feedNewBlock(game.getWhoHasTurn() === 1 ? 'A' : 'B', fieldId);
-            document.querySelector('h1').innerHTML = (game.getWhoHasTurn() === 1 ? game.player2.name : game.player1.name) + ' is on the move!';
+            document.querySelector('h1.canvas-title').innerHTML = (game.getWhoHasTurn() === 1 ? game.player2.name : game.player1.name) + ' is on the move!';
 
             game.place(parseInt(fieldId) - 1);
             // console.log(game.map);
@@ -100,16 +140,16 @@ function clickListener(buttonEvent) {
 
 game.emitter.addEventListener('win', e => {
     console.log(e.detail);
-    document.querySelector('h1').innerHTML = e.detail.winner.name + ' won the game!';
+    document.querySelector('h1.canvas-title').innerHTML = e.detail.winner.name + ' won the game!';
     game.newGame();
-    document.querySelector(".game-field").remove()
+    document.querySelector('.game-field').remove();
 });
 
 
-game.emitter.addEventListener("tie", e => {
+game.emitter.addEventListener('tie', e => {
     console.log(e);
-    document.querySelector('h1').innerHTML = 'It\'s a tie!';
+    document.querySelector('h1.canvas-title').innerHTML = 'It\'s a tie!';
     game.newGame();
-    document.querySelector(".game-field").remove()
-})
+    document.querySelector('.game-field').remove();
+});
 

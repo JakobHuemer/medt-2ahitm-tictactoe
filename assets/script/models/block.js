@@ -39,6 +39,8 @@ export default class Block extends EventTarget {
             this._element.src = '/assets/img/' + blockType + config.blockFileExtension;
             this._element.alt = blockType;
 
+            this._element.setAttribute('loading', 'lazy');
+
             // console.log('This element created');
         } else {
             // console.log('This element already exists');
@@ -214,8 +216,8 @@ export class Piston extends Block {
 
 
         this._element.innerHTML = `
-            <img class="piston-base" src="/assets/img/piston_base.png" alt="piston-base">
-            <img class="piston-extender" src="/assets/img/piston_extender${ this._sticky ? '_sticky.png' : '.png' }" alt="piston-extender">
+            <img loading="lazy" class="piston-base" src="/assets/img/piston_base.png" alt="piston-base">
+            <img loading="lazy" class="piston-extender" src="/assets/img/piston_extender${ this._sticky ? '_sticky.png' : '.png' }" alt="piston-extender">
         `;
 
         this._element.style.height = 1 / config.canvasHeight * 100 * 2 + '%';

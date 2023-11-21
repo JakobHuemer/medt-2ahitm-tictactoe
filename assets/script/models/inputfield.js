@@ -16,16 +16,17 @@ export default class InputField {
 
 
         if (typeof inputCallback === 'function')
-            this.inputCallback = inputCallback
+            this.inputCallback = inputCallback;
         else
-            this.inputCallback = () => {}
+            this.inputCallback = () => {
+            };
 
 
-        if (typeof changeCallback === "function")
-            this.changeCallback = changeCallback
+        if (typeof changeCallback === 'function')
+            this.changeCallback = changeCallback;
         else
-            this.changeCallback = () => {}
-
+            this.changeCallback = () => {
+            };
 
 
         this.element = document.createElement('div');
@@ -46,6 +47,10 @@ export default class InputField {
         this.element.appendChild(this.input);
         this.element.appendChild(this.autocompleteElement);
 
+        if (config.darkMode) {
+            this.element.classList.add('dark');
+        }
+
 
         if (config[configSetOption] !== undefined && config[configSetOption] !== null) {
             this._value = configSetOption[configSetOption];
@@ -62,17 +67,20 @@ export default class InputField {
             this.autocomplete();
 
             if (!!this.changeCallbackTimeout) {
-                clearTimeout(this.changeCallbackTimeout)
+                clearTimeout(this.changeCallbackTimeout);
             }
-            this.changeCallbackTimeout = setTimeout(this.changeCallback, 100);
+            this.changeCallbackTimeout = setTimeout(this.changeCallback, 600);
             this.inputCallback(this.input.value);
         });
 
         this.element.addEventListener('keydown', e => {
             if (e.key === 'Tab') {
-                e.preventDefault();
 
-                this.value = this.autocompleteElement.innerHTML;
+                if (this.autocompleteElement.innerHTML !== '') {
+                    this.value = this.autocompleteElement.innerHTML;
+                    e.preventDefault();
+                }
+                this.element.dispatchEvent(new Event('input'));
             }
         });
     }

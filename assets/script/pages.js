@@ -4,10 +4,12 @@ import config from './config.js';
 import InputField from './models/inputfield.js';
 import { testAudio } from './utils.js';
 
-export class Page {
+
+export class Page extends EventTarget {
     ui;
 
     constructor(ui, title, elements) {
+        super();
         this.ui = ui;
 
         if (!ui instanceof Ui) {
@@ -18,7 +20,7 @@ export class Page {
 
 
         this.title = title;
-        this.titleElement = document.createElement('div');
+        this.titleElement = document.createElement('span');
         this.titleElement.classList.add('menu-title');
         this.titleElement.innerHTML = this.title;
 
@@ -36,15 +38,24 @@ export class Page {
     async addElements(elements) {
 
         for (const item of elements) {
-            if (item instanceof MenuButton) {
+            if (!item) {
+                console.log('CONTINUED');
+                continue;
+            }
+            if (item instanceof MenuButton || item instanceof InputField) {
                 this.wrapper.appendChild(item.element);
             } else if (item instanceof Promise) {
                 const resolvedItem = await item;
                 this.wrapper.appendChild(resolvedItem);
             } else {
+
                 this.wrapper.appendChild(item);
             }
         }
+    }
+
+    onShow() {
+
     }
 }
 
@@ -62,7 +73,10 @@ export class HomePage extends Page {
             document.createElement('div'),
             new MenuButton('Local', () => ui.show('local')),
             new MenuButton('Public', () => ui.show('public')),
-            new MenuButton('Settings', () => ui.show('settings')),
+            new MenuButton('Settings', () => {
+                config.redirectAfterSettings = 'homepage';
+                ui.show('settings');
+            }),
         ]);
 
 
@@ -80,12 +94,21 @@ export class SettingsPage extends Page {
     constructor(ui) {
         super(ui, 'Settings', [
             new MenuSlider('Music: %v%', 'musicVolume', 0, 100, () => {
+                if (config.currentlyPlayingBackgroundMusic) {
+                    config.currentlyPlayingBackgroundMusic.volume = config.musicVolume;
+                }
+            }, () => {
+                if (config.currentlyPlayingBackgroundMusic) {
+                    console.log("CHANGE")
+                    config.currentlyPlayingBackgroundMusic.volume = config.musicVolume;
+                }
             }, 0.01),
             new MenuSlider('Effects: %v%', 'volume', 0, 100, () => {
+            }, () => {
             }, 0.01),
             new MenuSlider('Tickspeed: %v tps', 'tickSpeed', 1, 50, () => {
             }),
-            new MenuButton('Appearance', () => ui.show('textures')),
+            new MenuButton('Appearance', () => ui.show('appearance')),
 
             new MenuButton('Done', () => ui.show(config.redirectAfterSettings)),
         ]);
@@ -94,20 +117,33 @@ export class SettingsPage extends Page {
     }
 }
 
-export class TexturesPage extends Page {
+export class AppearancePage extends Page {
     constructor(ui) {
 
 
         super(ui, 'Appearance', [
-            TexturesPage.createField('backgroundBlock'),
-            TexturesPage.createField('player1Block'),
-            TexturesPage.createField('player2Block'),
+            AppearancePage.createField('backgroundBlock'),
+            AppearancePage.createField('player1Block'),
+            AppearancePage.createField('player2Block'),
+            new MenuButtonCycle('Show own Player 2 profile picture', {
+                'On': true,
+                'Off': false,
+            }, 'displayOwnConfigurationOnPublic', () => {
+            }),
             new MenuButtonCycle('High Contract Mode', {
                 'On': true,
                 'Off': false,
             }, 'darkMode', () => {
+                config.texturesChanged = true;
             }),
-            new MenuButton('Done', () => ui.show('settings')),
+
+            new MenuButton('Done', () => {
+                if (config.texturesChanged) {
+                    this.dispatchEvent(new Event('reloadUI'));
+                }
+                ui.show('settings');
+
+            }),
         ]);
         this.wrapper.classList.add('wrapper-settings-textures-menu');
     }
@@ -118,7 +154,7 @@ export class TexturesPage extends Page {
             'backgroundBlock': 'Background',
             'player1Block': 'Player 1',
             'player2Block': 'Player 2',
-        }
+        };
 
         let firstElement = document.createElement('div');
         firstElement.classList.add('ui-textures-element');
@@ -130,11 +166,11 @@ export class TexturesPage extends Page {
 
         let img = document.createElement('img');
         img.classList.add('textures-img-p1');
-        TexturesPage.updateImage(img, configTexture);
+        AppearancePage.updateImage(img, configTexture);
 
-        img.addEventListener("error", e => {
-            e.target.src = "/assets/img/missing_texture.png"
-        })
+        img.addEventListener('error', e => {
+            e.target.src = '/assets/img/missing_texture.png';
+        });
 
         const res = await fetch(config.server + '/texture?q=');
         const data = await res.json();
@@ -142,7 +178,8 @@ export class TexturesPage extends Page {
 
         let inputField = new InputField(configTexture, config[configTexture], autocompletionData, () => {
         }, () => {
-            TexturesPage.updateImage(img, configTexture);
+            config.texturesChanged = true;
+            AppearancePage.updateImage(img, configTexture);
         });
 
         let switcher = new MenuButtonCycle('Type',
@@ -152,6 +189,7 @@ export class TexturesPage extends Page {
                 'Custom': 'custom',
             },
             configTexture + 'Type', () => {
+                config.texturesChanged = true;
                 this.updateImage(img, configTexture);
             });
 
@@ -172,5 +210,54 @@ export class TexturesPage extends Page {
             // config.player1BlockType = custom
             img.src = config[configTexture];
         }
+    }
+}
+
+
+export class EscapeMenuPage extends Page {
+    constructor(ui) {
+        super(ui, '', [
+            new MenuButton('Back to game', () => ui.show('none')),
+            new MenuButton('Leave', () => {
+                // TODO: IMPLEMENT LEAVE FROM ONLINE GAME AND REFRESH PAGE ON LOCAL
+                ui.show('none');
+                console.log('IMPLEMENT');
+            }),
+            new MenuButton('Settings', () => {
+                config.redirectAfterSettings = 'escapemenu';
+                ui.show('settings');
+            }),
+        ]);
+    }
+}
+
+
+export class LocalGamePage extends Page {
+    constructor(ui) {
+
+        let tempDownElement = document.createElement('div');
+        tempDownElement.classList.add('ui-create-down-container');
+        tempDownElement.appendChild(
+            new MenuButton('Cancel', () => ui.show('homepage')).element,
+        );
+
+        tempDownElement.appendChild(
+            new MenuButton('Create', () => ui.show('none')).element,
+        );
+
+        super(ui, 'Create local game', [
+            new InputField('player1Name', config.player1Name, [], () => {
+            }, () => {
+            }),
+            new InputField('player2Name', config.player2Name, [], () => {
+            }, () => {
+            }),
+            tempDownElement,
+            // new MenuButton('Cancel', () => ui.show('homepage')).element,
+            // new MenuButton('Create', () => ui.show('none')).element,
+
+        ]);
+
+
     }
 }

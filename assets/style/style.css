@@ -8,6 +8,11 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: "Mojang";
+    src: url("/assets/font/mojang/fs-mojang-studios-2.otf") format("opentype");
+}
+
 
 * {
     margin: 0;
@@ -19,8 +24,104 @@
     caret: orange;
 }
 
+/*loading screen*/
+
+
+.ui-loading-screen {
+    z-index: 100000;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+
+    overflow: hidden;
+
+    cursor: url("/assets/img/ico/cursor.png") 0 0, default;
+
+    background: #EF323D;
+
+    &.dark {
+        background: black;
+    }
+
+    & > * {
+        cursor: url("/assets/img/ico/cursor.png") 0 0, default;
+
+    }
+
+    .header {
+
+        width: min(90%, 1500px);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3rem;
+
+        & > h1 {
+
+            font-family: "Mojang", "Minecraft", "Minecraft-Regular", "DejaVu Sans", sans-serif;
+            font-size: 6rem;
+
+
+            vertical-align: middle;
+
+            display: table-cell;
+
+            padding: 0 0 3rem 0;
+        }
+
+        & img {
+            height: 100%;
+            aspect-ratio: 1;
+            image-rendering: pixelated;
+        }
+    }
+
+    .progress-bar-wrapper {
+        height: 3rem;
+        width: min(90%, 1300px);
+        background: white;
+
+        padding: .3rem;
+
+        .progress-bar {
+            background: #EF323D;
+            height: 100%;
+            position: relative;
+
+            padding: .3rem;
+
+
+            &.dark {
+                background: black;
+            }
+
+            .progress {
+                transition: width .3s linear;
+                height: 100%;
+                width: 0%;
+                background: white;
+            }
+        }
+    }
+}
+
+/*loading screen end ------------------------------------------*/
+
+
 h1, h2, h3, h4, h5, h6, span, p {
     cursor: url("/assets/img/ico/text-cursor-2.png") 9 12, text;
+}
+
+.menu-title {
+    font-size: 5rem;
 }
 
 :root {
@@ -168,6 +269,10 @@ h1 {
 
     cursor: url("/assets/img/ico/cursor.png") 0 0, default;
 
+    &.dark {
+        background: url("/assets/img/gui/button-dark.png") center / contain no-repeat;
+    }
+
     & * {
         cursor: url("/assets/img/ico/cursor.png") 0 0, default;
     }
@@ -193,16 +298,29 @@ h1 {
         background: url("/assets/img/gui/button-active.png") center / contain no-repeat;
     }
 
+    &.dark:hover {
+        background: url("/assets/img/gui/button-active-dark.png") center / contain no-repeat;
+    }
+
     &.menu-slider {
 
 
         background: url("/assets/img/gui/button-slider.png") center / contain no-repeat;
 
+        &.dark {
+            background: url("/assets/img/gui/button-slider-dark.png") center / contain no-repeat;
+        }
 
         &:hover .menu-slider-slider::-moz-range-thumb {
             z-index: -1;
             background: url("/assets/img/gui/button-slider-slider-active.png") center / contain no-repeat;
         }
+
+        &.dark:hover .menu-slider-slider::-moz-range-thumb {
+
+            background: url("/assets/img/gui/button-slider-slider-active-dark.png") center / contain no-repeat;
+        }
+
 
         .menu-slider-slider {
             -webkit-appearance: none;
@@ -214,7 +332,8 @@ h1 {
 
             background: url("/assets/img/gui/button-slider.png") center / contain no-repeat;
 
-            &:focus {
+            &:focus,
+            &:hover {
                 outline: none;
 
 
@@ -240,64 +359,20 @@ h1 {
                 background: url("/assets/img/gui/button-slider-slider.png") center / contain no-repeat;
             }
         }
-    }
-}
 
-.menu-input {
-
-    z-index: 10000;
-    aspect-ratio: 10 / 1;
-    outline: none;
-    border: none;
-    background: url("/assets/img/gui/button-slider.png") center / contain no-repeat;
-
-    cursor: url("/assets/img/ico/text-cursor.png") 9 12, text;
-    caret-shape: underscore;
-
-    isolation: isolate;
-
-    position: relative;
-
-    & * {
-        cursor: url("/assets/img/ico/text-cursor.png") 9 12, text;
-
-        caret-shape: underscore;
-    }
-
-    .menu-input-autocomplete {
-        width: 100%;
-        /*background: red;*/
-        pointer-events: none;
-        opacity: .6;
-        font-size: 1.2rem;
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        padding-inline: 1rem;
-
-    }
-
-    .menu-input-field {
-
-        width: 500px;
-        background: transparent;
+        &.dark .menu-slider-slider {
+            background: url("/assets/img/gui/button-slider-dark.png") center / contain no-repeat;
 
 
-        padding-inline: 1rem;
-        font-size: 1.2rem;
-        height: 100%;
-        border: none;
-        outline: none;
+            &::-moz-range-thumb,
+            &::-webkit-slider-thumb {
+                background: url("/assets/img/gui/button-slider-slider-dark.png") center / contain no-repeat;
 
-
-        &:focus {
-            outline: none;
-            border: none;
+            }
         }
-
     }
 }
+
 
 
 .ui-wrapper {
@@ -322,10 +397,11 @@ h1 {
         display: grid;
         place-items: center;
         position: absolute;
-        left: 50%;
-        top: 50%;
+        width: 100%;
 
-        transform: translate(-50%, -50%);
+        /*left: 50%;*/
+        /*top: 50%;*/
+        /*transform: translate(-50%, -50%);*/
 
         .menu-title {
             position: absolute;
@@ -383,5 +459,80 @@ h1 {
         display: block;
         margin: auto;
         outline: 3px solid black;
+    }
+}
+
+.loader {
+    position: absolute;
+
+    top: 1000%;
+    left: 1000%;
+}
+
+.ui-create-down-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.menu-input {
+
+    z-index: 10000;
+    aspect-ratio: 10 / 1;
+    outline: none;
+    border: none;
+    background: url("/assets/img/gui/button-slider.png") center / contain no-repeat;
+
+
+    cursor: url("/assets/img/ico/text-cursor.png") 9 12, text;
+    caret-shape: underscore;
+
+    isolation: isolate;
+
+    position: relative;
+
+    &.dark {
+
+        background: url("/assets/img/gui/button-slider-dark.png") center / contain no-repeat;
+    }
+
+    & * {
+        cursor: url("/assets/img/ico/text-cursor.png") 9 12, text;
+
+        caret-shape: underscore;
+    }
+
+    .menu-input-autocomplete {
+        width: 100%;
+        /*background: red;*/
+        pointer-events: none;
+        opacity: .6;
+        font-size: 1.2rem;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        padding-inline: 1rem;
+
+    }
+
+    .menu-input-field {
+
+        width: 500px;
+        background: transparent;
+
+
+        padding-inline: 1rem;
+        font-size: 1.2rem;
+        height: 100%;
+        border: none;
+        outline: none;
+
+
+        &:focus {
+            outline: none;
+            border: none;
+        }
+
     }
 }
