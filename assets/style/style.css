@@ -536,3 +536,14 @@ h1 {
 
     }
 }
+
+.ui-create-local-entry {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    & img {
+        height: 7rem;
+        border: 3px solid black;
+    }
+}

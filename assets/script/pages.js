@@ -99,7 +99,7 @@ export class SettingsPage extends Page {
                 }
             }, () => {
                 if (config.currentlyPlayingBackgroundMusic) {
-                    console.log("CHANGE")
+                    console.log('CHANGE');
                     config.currentlyPlayingBackgroundMusic.volume = config.musicVolume;
                 }
             }, 0.01),
@@ -142,7 +142,6 @@ export class AppearancePage extends Page {
                     this.dispatchEvent(new Event('reloadUI'));
                 }
                 ui.show('settings');
-
             }),
         ]);
         this.wrapper.classList.add('wrapper-settings-textures-menu');
@@ -237,6 +236,13 @@ export class LocalGamePage extends Page {
 
         let tempDownElement = document.createElement('div');
         tempDownElement.classList.add('ui-create-down-container');
+
+
+
+
+
+        let player2 = document.createElement('div');
+
         tempDownElement.appendChild(
             new MenuButton('Cancel', () => ui.show('homepage')).element,
         );
@@ -246,12 +252,9 @@ export class LocalGamePage extends Page {
         );
 
         super(ui, 'Create local game', [
-            new InputField('player1Name', config.player1Name, [], () => {
-            }, () => {
-            }),
-            new InputField('player2Name', config.player2Name, [], () => {
-            }, () => {
-            }),
+            LocalGamePage.createPlayerInput('player1Name'),
+            LocalGamePage.createPlayerInput('player2Name'),
+
             tempDownElement,
             // new MenuButton('Cancel', () => ui.show('homepage')).element,
             // new MenuButton('Create', () => ui.show('none')).element,
@@ -259,5 +262,23 @@ export class LocalGamePage extends Page {
         ]);
 
 
+    }
+
+
+    static createPlayerInput(playerName) {
+
+        let img1 = document.createElement('img');
+        img1.src = config.playerHeadApi + config[playerName];
+        let player1 = document.createElement('div');
+        player1.classList.add('ui-create-local-entry');
+        player1.appendChild(
+            new InputField(playerName, config[playerName], [], () => {
+            }, () => {
+                img1.src = config.playerHeadApi + config[playerName];
+            }).element,
+        );
+        player1.appendChild(img1);
+
+        return player1;
     }
 }
