@@ -1,7 +1,6 @@
 import Block from './models/block.js';
 import Animator from './animator.js';
 import config from './config.js';
-import { play } from './utils.js';
 
 let id = 1;
 
@@ -12,6 +11,9 @@ export default class Canvas {
     bottomLayer;
     gameField;
     animator;
+
+    player1Blocks = [];
+    player2Blocks = [];
 
     constructor(topLayer, bottomLayer, gameField) {
 
@@ -26,12 +28,20 @@ export default class Canvas {
         this.gameField = gameField;
     }
 
+    clear() {
+        this.blocks = []
+        this.player1Blocks = [];
+        this.player2Blocks = [];
+        this.gameField.innerHTML = '';
+        this.bottomLayer.innerHTML = '';
+        this.topLayer.innerHTML = '';
+    }
+
     deleteBlock(toDelete) {
 
         if (!toDelete) {
             return false;
         }
-        console.log('LENGTH NOW:', this.blocks.length);
 
         let temp = this.blocks.filter(block => {
             // console.log('comparing: ' + toDelete + ' === ' + block._pos + ': ' + (toDelete !== block._pos));
@@ -40,7 +50,32 @@ export default class Canvas {
 
         this.blocks = temp;
 
-        console.log('LENGTH AFTER:', this.blocks.length);
+    }
+
+    reloadTextures() {
+        console.log('RELOADING TEXTURES');
+
+        console.log(this.player1Blocks)
+        console.log("-----------------")
+        console.log(this.player2Blocks)
+
+        for (let el of this.player1Blocks) {
+            console.log(getTextures('player1Block'));
+            el.element.src = getTextures('player1Block');
+        }
+        for (let el of this.player2Blocks) {
+            el.element.src = getTextures('player2Block');
+        }
+
+        function getTextures(playerBlock) {
+            if (config[playerBlock + 'Type'] === 'block') {
+                return config.server + '/images/' + config[playerBlock] + '.png';
+            } else if (config[playerBlock + 'Type'] === 'head') {
+                return config.playerHeadApi + config[playerBlock];
+            } else {
+                return config[playerBlock];
+            }
+        }
     }
 
     add(toAdd) {
@@ -70,13 +105,20 @@ export default class Canvas {
         //
         // console.log(toAdd.pos);
 
-
         id++;
         toAdd.id = id;
         toAdd.element.id = `block-${ id }`;
 
-        this.blocks.push(toAdd);
+        if (!Array.isArray(toAdd.pos)) {
 
+            if (toAdd.pos.match(/AN[123456]/g)) {
+                this.player1Blocks.push(toAdd);
+            } else if (toAdd.pos.match(/BN[123456]/g)) {
+                this.player2Blocks.push(toAdd);
+            }
+
+        }
+        this.blocks.push(toAdd);
         if (toAdd.lvl === 1) {
             this.topLayer.appendChild(toAdd.element);
         } else if (toAdd.lvl === 0) {
@@ -167,9 +209,10 @@ export default class Canvas {
      * @param player {'A' | 'B'}
      * @param fieldId {number} - 0 - 8
      */
-    feedNewBlock(player, fieldId) {
+    feedNewBlock(player) {
 
-        this.getByPos(player + 'N6').pos = 'PLACED' + fieldId;
+        id++;
+        this.getByPos(player + 'N6').pos = 'PLACED' + id;
 
         // this.getByPos(player + 'N5').element.classList.replace(/5/g, '6');
         // this.getByPos(player + 'N5').pos = player + 'N6';
@@ -217,7 +260,6 @@ export default class Canvas {
         ];
 
         let index = 5;
-        console.log(this.blocks);
 
         for (const coords of blocksToAdd) {
             this.add(
@@ -251,23 +293,6 @@ export default class Canvas {
         firstBlock.element.classList.add(player + 'NNN1');
 
         // this.add(firstBlock);
-        console.log(firstBlock);
     }
 
-
-    fieldToPos(fieldId) {
-        let temp = {
-            0: ['AN1', 'BU9'],
-            1: ['AN2', 'BU8'],
-            2: ['AN3', 'BU7'],
-            3: ['AN4', 'BU6'],
-            4: ['AN5', 'BU5'],
-            5: ['AN6', 'BU4'],
-            6: ['AN7', 'BU3'],
-            7: ['AN8', 'BU2'],
-            8: ['AN9', 'BU1'],
-        };
-
-        return temp[fieldId];
-    }
 };

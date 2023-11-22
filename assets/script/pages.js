@@ -2,8 +2,7 @@ import MenuButton, { MenuButtonCycle, MenuSlider } from './models/menubutton.js'
 import Ui from './ui.js';
 import config from './config.js';
 import InputField from './models/inputfield.js';
-import { testAudio } from './utils.js';
-
+import { play } from './utils.js';
 
 export class Page extends EventTarget {
     ui;
@@ -71,11 +70,11 @@ export class HomePage extends Page {
             document.createElement('div'),
             document.createElement('div'),
             document.createElement('div'),
-            new MenuButton('Local', () => ui.show('local')),
-            new MenuButton('Public', () => ui.show('public')),
+            new MenuButton('Local', () => ui.showPage('local')),
+            // new MenuButton('Public', () => ui.show('public')),
             new MenuButton('Settings', () => {
                 config.redirectAfterSettings = 'homepage';
-                ui.show('settings');
+                ui.showPage('settings');
             }),
         ]);
 
@@ -108,9 +107,9 @@ export class SettingsPage extends Page {
             }, 0.01),
             new MenuSlider('Tickspeed: %v tps', 'tickSpeed', 1, 50, () => {
             }),
-            new MenuButton('Appearance', () => ui.show('appearance')),
+            new MenuButton('Appearance', () => ui.showPage('appearance')),
 
-            new MenuButton('Done', () => ui.show(config.redirectAfterSettings)),
+            new MenuButton('Done', () => ui.showPage(config.redirectAfterSettings)),
         ]);
 
         this.wrapper.classList.add('wrapper-settings-menu');
@@ -125,11 +124,11 @@ export class AppearancePage extends Page {
             AppearancePage.createField('backgroundBlock'),
             AppearancePage.createField('player1Block'),
             AppearancePage.createField('player2Block'),
-            new MenuButtonCycle('Show own Player 2 profile picture', {
-                'On': true,
-                'Off': false,
-            }, 'displayOwnConfigurationOnPublic', () => {
-            }),
+            // new MenuButtonCycle('Show own Player 2 profile picture', {
+            //     'On': true,
+            //     'Off': false,
+            // }, 'displayOwnConfigurationOnPublic', () => {
+            // }),
             new MenuButtonCycle('High Contract Mode', {
                 'On': true,
                 'Off': false,
@@ -138,10 +137,10 @@ export class AppearancePage extends Page {
             }),
 
             new MenuButton('Done', () => {
-                if (config.texturesChanged) {
-                    this.dispatchEvent(new Event('reloadUI'));
-                }
-                ui.show('settings');
+                // if (config.texturesChanged) {
+                console.log('DISPATCHING EVENT');
+                this.ui.dispatchEvent(new Event('reloadUI'));
+                ui.showPage('settings');
             }),
         ]);
         this.wrapper.classList.add('wrapper-settings-textures-menu');
@@ -216,15 +215,15 @@ export class AppearancePage extends Page {
 export class EscapeMenuPage extends Page {
     constructor(ui) {
         super(ui, '', [
-            new MenuButton('Back to game', () => ui.show('none')),
+            new MenuButton('Back to game', () => ui.showPage('none')),
             new MenuButton('Leave', () => {
                 // TODO: IMPLEMENT LEAVE FROM ONLINE GAME AND REFRESH PAGE ON LOCAL
-                ui.show('none');
+                ui.showPage('none');
                 console.log('IMPLEMENT');
             }),
             new MenuButton('Settings', () => {
                 config.redirectAfterSettings = 'escapemenu';
-                ui.show('settings');
+                ui.showPage('settings');
             }),
         ]);
     }
@@ -238,17 +237,18 @@ export class LocalGamePage extends Page {
         tempDownElement.classList.add('ui-create-down-container');
 
 
-
-
-
         let player2 = document.createElement('div');
 
         tempDownElement.appendChild(
-            new MenuButton('Cancel', () => ui.show('homepage')).element,
+            new MenuButton('Cancel', () => ui.showPage('homepage')).element,
         );
 
         tempDownElement.appendChild(
-            new MenuButton('Create', () => ui.show('none')).element,
+            new MenuButton('Create', () => {
+                // config.redirectAfterSettings = 'none';
+                console.log("DISPATCH LOCAL NEW GAME")
+                this.ui.dispatchEvent(new Event('local'));
+            }).element,
         );
 
         super(ui, 'Create local game', [
@@ -280,5 +280,47 @@ export class LocalGamePage extends Page {
         player1.appendChild(img1);
 
         return player1;
+    }
+}
+
+
+export class PostGamePage extends Page {
+    constructor(ui) {
+
+        let results = document.createElement('div');
+
+
+        super(ui, '', [
+            PostGamePage.createResultEntry(ui, "player1"),
+            PostGamePage.createResultEntry(ui, "player2"),
+            new MenuButton('Rematch', () => {
+                this.ui.dispatchEvent(new Event('rematch'));
+            }),
+            new MenuButton("Leave", () => {
+                this.ui.dispatchEvent(new Event('leave'));
+            })
+        ]);
+
+    }
+
+    static createResultEntry(ui, player) {
+
+        let resField = document.createElement('div');
+        resField.classList.add('ui-postgame-result');
+
+        let resImg = document.createElement('img');
+        resImg.src = config.playerHeadApi + config[player + 'Name'];
+
+        let playerNameWins = document.createElement('span');
+        playerNameWins.innerHTML = config[player + "Name"] + ': ';
+
+        let playerPoints = document.createElement('span');
+        playerPoints.innerHTML = ui.gameManager.game[player]['points'];
+
+        resField.appendChild(resImg);
+        resField.appendChild(playerNameWins);
+        resField.appendChild(playerPoints);
+
+        return resField;
     }
 }

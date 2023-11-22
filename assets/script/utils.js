@@ -1,6 +1,6 @@
 import config from './config.js';
 import Ui from './ui.js';
-import { AppearancePage, EscapeMenuPage, HomePage, LocalGamePage, SettingsPage } from './pages.js';
+import { AppearancePage, EscapeMenuPage, HomePage, LocalGamePage, PostGamePage, SettingsPage } from './pages.js';
 
 
 /**
@@ -52,7 +52,6 @@ export async function play(filepath, volumeOf = 'volume', callback = () => {}) {
             }
             await audio.play();
             audio.onended = callback;
-            return audio;
         })
     } catch (error) {
         if (error.name === 'NotAllowedError' && !config.audioAlertBoxShown) {
@@ -74,20 +73,41 @@ export function createElementFromHTML(htmlString) {
 }
 
 
-export function loadUI() {
+export function loadUI(gm) {
     if (document.querySelector('.ui-wrapper'))
         document.querySelector('.ui-wrapper').remove();
 
-    const UI = new Ui();
+    const UI = new Ui(gm);
 
     document.querySelector('.ui-loading-screen').style.visibility = 'visible';
 
     UI.addPage('homepage', new HomePage(UI));
     UI.addPage('settings', new SettingsPage(UI));
     UI.addPage('appearance', new AppearancePage(UI));
-    UI.addPage('escapemenu', new EscapeMenuPage(UI));
+    // UI.addPage('escapemenu', new EscapeMenuPage(UI));
     UI.addPage('local', new LocalGamePage(UI));
-    UI.show('homepage');
+    UI.showPage('homepage');
+
+
+    const canvasElement = document.querySelector('.canvas');
+    const bgTiles = document.querySelector('.bg-tiles');
+
+
+    function onResize() {
+        const boundings = canvasElement.getBoundingClientRect();
+        const regularTileSize = boundings.width / 11;
+        const xOffset = boundings.left % regularTileSize;
+        const yOffset = boundings.top % regularTileSize;
+
+        bgTiles.style.background = `url(/assets/img/${ config.backgroundBlock + config.blockFileExtension }) ${ xOffset }px ${ yOffset }px / ${ regularTileSize }px repeat`;
+
+        UI.setBackground(config.backgroundBlock, regularTileSize, xOffset, yOffset);
+
+    }
+
+    addEventListener('resize', onResize);
+
+    onResize();
 
     document.body.appendChild(UI.element);
 

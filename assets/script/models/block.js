@@ -36,8 +36,25 @@ export default class Block extends EventTarget {
         if (element === null || element === undefined) {
             this._element = document.createElement('img');
 
-            this._element.src = '/assets/img/' + blockType + config.blockFileExtension;
-            this._element.alt = blockType;
+
+            if (!Array.isArray(this._pos) && this._pos.match(/([A|B])N[123456]/g)) {
+                let playerBlock = this._pos.match(/AN[123456]/g) ? 'player1Block' : 'player2Block';
+                let el = this._element;
+
+                if (config[playerBlock + 'Type'] === 'block') {
+                    el.src = config.server + '/images/' + config[playerBlock] + '.png';
+                } else if (config[playerBlock + 'Type'] === 'head') {
+                    el.src = config.playerHeadApi + config[playerBlock];
+                } else {
+                    el.src = config[playerBlock];
+                }
+
+
+            } else {
+                this._element.src = '/assets/img/' + blockType + config.blockFileExtension;
+                this._element.alt = blockType;
+            }
+
 
             this._element.setAttribute('loading', 'lazy');
 
@@ -343,14 +360,24 @@ export class HoverBlock extends Block {
         }
         let texture;
 
-        if (player === 'A') {
-            texture = config.player1Block;
+        let playerBlock = player === 'A' ? 'player1Block' : 'player2Block';
+
+        if (config[playerBlock + 'Type'] === 'block') {
+            texture = config.server + '/images/' + config[playerBlock] + '.png';
+        } else if (config[playerBlock + 'Type'] === 'head') {
+            texture = config.playerHeadApi + config[playerBlock];
         } else {
-            texture = config.player2Block;
+            texture = config[playerBlock];
         }
+        //
+        // if (player === 'A') {
+        //     texture = config.player1Block;
+        // } else {
+        //     texture = config.player2Block;
+        // }
 
         this._element.classList.remove('hover-block-disabled');
-        this._element.src = `/assets/img/${ texture }.png`;
+        this._element.src = texture
     }
 
 }

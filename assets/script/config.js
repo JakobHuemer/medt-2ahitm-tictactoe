@@ -1,7 +1,7 @@
 export default {
-    musicVolume: 1,
+    musicVolume: 0.0,
     volume: 0.1,
-    tickSpeed: 20,
+    tickSpeed: 50,
     TICKS_PER_SECOND: 20,
     pistonTickDuration: 3,
     canvasHeight: 7,
@@ -25,6 +25,7 @@ export default {
 
     darkMode: false,
     redirectAfterSettings: 'homepage',
+    startPageAfterReload: 'homepage',
 
     server: 'https://tttjakki.jstjxel.de',
     // server: 'http://localhost:3030',
