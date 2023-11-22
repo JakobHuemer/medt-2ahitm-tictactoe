@@ -44,7 +44,6 @@ export default class Canvas {
         }
 
         let temp = this.blocks.filter(block => {
-            // console.log('comparing: ' + toDelete + ' === ' + block._pos + ': ' + (toDelete !== block._pos));
             return toDelete !== block._pos;
         });
 
@@ -80,24 +79,13 @@ export default class Canvas {
             return;
         }
 
-        // console.log("TO ADD: ", toAdd.pos)
-        // console.log(toAdd.pos);
-
         if (!toAdd instanceof Block || !!this.getByPos(toAdd.pos)) {
             if (!toAdd instanceof Block) {
                 throw new Error('toAdd musst be of type Block');
             } else {
                 throw new Error('This pos already exists');
             }
-            // console.log(toAdd)
-            // console.log(this.blocks.has(toAdd.pos));
-            // console.log('RETURN');
-            return;
         }
-
-        // console.log(toAdd);
-        //
-        // console.log(toAdd.pos);
 
         id++;
         toAdd.id = id;
@@ -142,17 +130,6 @@ export default class Canvas {
                 return block;
             }
         });
-        // for (const entry of this.blocks.entries()) {
-        //     if (Array.isArray(entry[0])) {
-        //         for (const item of entry[0]) {
-        //             if (item === checkPos) {
-        //                 return entry[1];
-        //             }
-        //         }
-        //     } else if (entry[0] === checkPos) {
-        //         return entry[1];
-        //     }
-        // }
     }
 
     removeBlock(checkPos) {
@@ -168,11 +145,8 @@ export default class Canvas {
     }
 
     toLayer(item, layer) {
-        // console.log('ITEM', item);
         if (typeof item === 'string') {
-            // console.log('AWDAWDAWDAWDAWD');
             item = this.getByPos(item);
-            // console.log(item);
         }
 
         if (!item) {
@@ -207,36 +181,6 @@ export default class Canvas {
 
         id++;
         this.getByPos(player + 'N6').pos = 'PLACED' + id;
-
-        // this.getByPos(player + 'N5').element.classList.replace(/5/g, '6');
-        // this.getByPos(player + 'N5').pos = player + 'N6';
-        // console.log(this.getByPos(player + 'N6'));
-        //
-        // this.getByPos(player + 'N4').element.classList.replace(/4/g, '5');
-        // this.getByPos(player + 'N4').pos = player + 'N5';
-        // console.log(this.getByPos(player + 'N5'));
-        //
-        // this.getByPos(player + 'N3').element.classList.replace(/3/g, '4');
-        // this.getByPos(player + 'N3').pos = player + 'N4';
-        // console.log(this.getByPos(player + 'N4'));
-        //
-        // this.getByPos(player + 'N2').element.classList.replace(/2/g, '3');
-        // this.getByPos(player + 'N2').pos = player + 'N3';
-        // console.log(this.getByPos(player + 'N3'));
-        //
-        // this.getByPos(player + 'N1').element.classList.replace(/1/g, '2');
-        // this.getByPos(player + 'N1').pos = player + 'N2';
-        // console.log(this.getByPos(player + 'N2'));
-
-        // for (let i = 1; i < 6; i++) {
-        //     this.getByPos(player + 'N' + i)
-        //         .element.classList.replace(player + 'NNN' + i,
-        //         player + 'NNN' + (i + 1));
-        //     this.getByPos(player + 'N' + i).pos = player + 'N' + (i + 1);
-        //     console.log(this.getByPos(player + 'N' + (i + 1)).pos);
-        //     console.log(this.getByPos(player + 'N' + (i + 1)).element.classList);
-        //     console.log('-----------------------------------');
-        // }
 
         for (let i = 5; i > 0; i--) {
             this.getByPos(player + 'N' + i).delete();
@@ -286,7 +230,6 @@ export default class Canvas {
 
         firstBlock.element.classList.add(player + 'NNN1');
 
-        // this.add(firstBlock);
     }
 
 };

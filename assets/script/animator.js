@@ -28,7 +28,6 @@ export default class Animator extends EventTarget {
         }
 
         setTimeout(() => {
-            // this.dispatchEvent(new CustomEvent('animationdone', { detail: { animationName: name } }));
             if (typeof doneCallback === 'function') {
                 doneCallback();
             }
@@ -78,26 +77,7 @@ export default class Animator extends EventTarget {
                 * toAnim: B true
                 * repl: %A - A false
                 * repl: %B - B false
-                *
-                * XOR
-                * */
-                // console.log(player)
-                // console.log(player)
-                // console.log(player)
-                // console.log(player)
-                // console.log(player)
-                // console.log(player)
-                // console.log(player)
-                // console.log(player)
-                // console.log(player)
-                // console.log(player)
-                // console.log("-----------------------------------");
-                // console.log(itemAnimationName);
-                // console.log("------------------------")
-
-                // console.log("----------------------------------------")
-                // console.log(player);
-                // console.log(toAnimatePlayer);
+                */
                 if (player === 'A' && toAnimatePlayer === 'A') {
                     itemName = transferredName.replace(/A%/g, 'A');
                 } else if (player === 'A' && toAnimatePlayer === 'B') {
@@ -109,7 +89,6 @@ export default class Animator extends EventTarget {
                 }
 
                 const item = this.canvas.getByPos(itemName);
-                // console.log('itemName:', itemName);
 
                 if (item) {
                     if (checked) {
@@ -121,7 +100,6 @@ export default class Animator extends EventTarget {
                                 this.canvas.toLayer(item, 0);
                                 break;
                         }
-                        // return
                         continue;
                     }
 

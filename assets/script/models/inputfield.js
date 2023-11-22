@@ -58,10 +58,6 @@ export default class InputField {
 
 
         this.element.addEventListener('input', () => {
-            // console.log('==================================');
-            // console.log(!!this.autocompletionData)
-            // console.log(Array.isArray(this.autocompletionData))
-            // console.log(this.autocompletionData)
             this.value = this.input.value;
 
             this.autocomplete();
@@ -100,11 +96,8 @@ export default class InputField {
 
     autocomplete() {
         if (!!this._autocompletionData && Array.isArray(this._autocompletionData)) {
-            // console.log('TRUE');
             let matches = this._autocompletionData.filter(e => e.toLowerCase().startsWith(this.input.value.toLowerCase()));
-            // console.log(matches);
             this.autocompleteElement.innerHTML = !this.input.value ? '' : matches.length > 0 ? matches.sort()[0] : '';
-            // console.log('CONFIG: ' + config[this.configSetOption]);
         }
     }
 

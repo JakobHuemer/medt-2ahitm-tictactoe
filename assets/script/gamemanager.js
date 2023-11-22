@@ -6,7 +6,6 @@ import animations from './animations.js';
 import Ui from './ui.js';
 import { AppearancePage, HomePage, LocalGamePage, PostGamePage, SettingsPage } from './pages.js';
 import { loadUI } from './utils.js';
-import { HoverBlock } from './models/block.js';
 
 
 export class GameManager extends EventTarget {
@@ -24,7 +23,6 @@ export class GameManager extends EventTarget {
             document.querySelector('.canvas .game-field'),
         );
 
-        // this.ui.addEventListener('reloadUI', reload);
 
         let reload = () => {
             this.ui = loadUI(this);
@@ -46,38 +44,14 @@ export class GameManager extends EventTarget {
 
     createNewGame() {
         if (!this.game) {
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
-            console.error('CREATING NEW GAME !!!!!!!!!!!!!!');
             this.game = new Game(config.player1Name, config.player2Name);
         }
         this.game.player1.name = config.player1Name;
         this.game.player2.name = config.player2Name;
 
-        // console.log(JSON.parse(JSON.stringify(this.canvas)));
         this.canvas.clear();
         let i = 0;
 
-        // console.log(JSON.parse(JSON.stringify(this.canvas)));
 
         let copyOfGameField = maps.gameField.map(subArr => {
             let constructor = subArr[0];
@@ -128,7 +102,6 @@ export class GameManager extends EventTarget {
                     } else {
                         elem.setDisabled();
                         elem.element.removeEventListener('click', clickListener);
-                        // elem.element.removeEventListener('click', this);
                     }
                 }
 
@@ -137,15 +110,6 @@ export class GameManager extends EventTarget {
             this.canvas.animator.animate(animations['U' + translatedFieldId], this.game.whoHasTurn === 1 ? 'A' : 'B', 'main', animationDone);
 
             this.canvas.getByPos('H' + fieldId).setDisabled();
-
-
-            // this.canvas.animator.removeEventListener('animationdone', animationDone);
-            //
-            // if (i === 0) {
-            //     // replace eventlistener with callback
-            //     this.canvas.animator.addEventListener('animationdone', animationDone);
-            // }
-            // i++;
 
         };
 
@@ -157,7 +121,6 @@ export class GameManager extends EventTarget {
 
         this.canvas.reloadTextures();
 
-        console.log("NOW SETTING ON WIN FUNCTION")
 
         this.game.onWin = (winner) => {
             document.querySelector('h1.canvas-title').innerHTML = winner.name + ' won the game!';

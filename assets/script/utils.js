@@ -15,12 +15,6 @@ function getSupportedAudio() {
         ogg: 'audio/ogg',
     };
 
-    // for (let format in formats) {
-    //     if (new Audio().canPlayType(formats[format]) === 'probably') {
-    //         return format;
-    //     }
-    // }
-
     return 'mp3';
 }
 
@@ -38,8 +32,6 @@ export async function testAudio(path) {
 export async function play(filepath, volumeOf = 'volume', callback = () => {}) {
 
     filepath = '/assets/audio/' + filepath + '.' + getSupportedAudio();
-
-    // console.log("playing: " + filepath)
 
     try {
         const audio = new Audio(filepath);
@@ -84,7 +76,6 @@ export function loadUI(gm) {
     UI.addPage('homepage', new HomePage(UI));
     UI.addPage('settings', new SettingsPage(UI));
     UI.addPage('appearance', new AppearancePage(UI));
-    // UI.addPage('escapemenu', new EscapeMenuPage(UI));
     UI.addPage('local', new LocalGamePage(UI));
     UI.showPage('homepage');
 
@@ -99,7 +90,15 @@ export function loadUI(gm) {
         const xOffset = boundings.left % regularTileSize;
         const yOffset = boundings.top % regularTileSize;
 
-        bgTiles.style.background = `url(/assets/img/${ config.backgroundBlock + config.blockFileExtension }) ${ xOffset }px ${ yOffset }px / ${ regularTileSize }px repeat`;
+        if (config.backgroundBlockType === 'block') {
+            bgTiles.style.background = `url(${config.server}/images/${ config.backgroundBlock }.png) ${ xOffset }px ${ yOffset }px / ${ regularTileSize }px repeat`;
+        } else if (config.backgroundBlockType === 'head') {
+
+            bgTiles.style.background = `url(${ config.playerHeadApi }${ config.backgroundBlock }) ${ xOffset }px ${ yOffset }px / ${ regularTileSize }px repeat`;
+        } else {
+            bgTiles.style.background = `url(${ config.backgroundBlock }) ${ xOffset }px ${ yOffset }px / ${ regularTileSize }px repeat`;
+
+        }
 
         UI.setBackground(config.backgroundBlock, regularTileSize, xOffset, yOffset);
 

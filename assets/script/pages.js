@@ -38,7 +38,6 @@ export class Page extends EventTarget {
 
         for (const item of elements) {
             if (!item) {
-                console.log('CONTINUED');
                 continue;
             }
             if (item instanceof MenuButton || item instanceof InputField) {
@@ -66,26 +65,18 @@ export class HomePage extends Page {
         img.src = '/assets/img/gui/title-' + (config.darkMode ? 'dark' : 'light') + '.png';
 
         super(ui, `<img src='/assets/img/gui/title-${ config.darkMode ? 'dark' : 'light' }.png' alt="Minecraft Title">`, [
-            // img,
             document.createElement('div'),
             document.createElement('div'),
             document.createElement('div'),
             new MenuButton('Local', () => ui.showPage('local')),
-            // new MenuButton('Public', () => ui.show('public')),
             new MenuButton('Settings', () => {
                 config.redirectAfterSettings = 'homepage';
                 ui.showPage('settings');
             }),
         ]);
 
-
-        // this.element.classList.add('ui-page');
         this.wrapper.classList.add('wrapper-main-menu');
 
-
-        // this.element.appendChild(new MenuButton('Local', () => ui.show('local')).element);
-        // this.element.appendChild(new MenuButton('public', () => ui.show('public')).element);
-        // this.element.appendChild(new MenuButton('settings', () => ui.show('settings')).element);
     }
 }
 
@@ -124,11 +115,7 @@ export class AppearancePage extends Page {
             AppearancePage.createField('backgroundBlock'),
             AppearancePage.createField('player1Block'),
             AppearancePage.createField('player2Block'),
-            // new MenuButtonCycle('Show own Player 2 profile picture', {
-            //     'On': true,
-            //     'Off': false,
-            // }, 'displayOwnConfigurationOnPublic', () => {
-            // }),
+
             new MenuButtonCycle('High Contract Mode', {
                 'On': true,
                 'Off': false,
@@ -137,8 +124,6 @@ export class AppearancePage extends Page {
             }),
 
             new MenuButton('Done', () => {
-                // if (config.texturesChanged) {
-                console.log('DISPATCHING EVENT');
                 this.ui.dispatchEvent(new Event('reloadUI'));
                 ui.showPage('settings');
             }),
@@ -202,10 +187,8 @@ export class AppearancePage extends Page {
         if (config[configTexture + 'Type'] === 'block') {
             img.src = config.server + '/images/' + config[configTexture] + '.png';
         } else if (config[configTexture + 'Type'] === 'head') {
-            console.log('HEAD HEAD HEAD');
             img.src = config.playerHeadApi + config[configTexture];
         } else {
-            // config.player1BlockType = custom
             img.src = config[configTexture];
         }
     }
@@ -219,7 +202,6 @@ export class EscapeMenuPage extends Page {
             new MenuButton('Leave', () => {
                 // TODO: IMPLEMENT LEAVE FROM ONLINE GAME AND REFRESH PAGE ON LOCAL
                 ui.showPage('none');
-                console.log('IMPLEMENT');
             }),
             new MenuButton('Settings', () => {
                 config.redirectAfterSettings = 'escapemenu';
@@ -245,7 +227,6 @@ export class LocalGamePage extends Page {
 
         tempDownElement.appendChild(
             new MenuButton('Create', () => {
-                // config.redirectAfterSettings = 'none';
                 this.ui.dispatchEvent(new Event('local'));
             }).element,
         );
@@ -255,9 +236,6 @@ export class LocalGamePage extends Page {
             LocalGamePage.createPlayerInput('player2Name'),
 
             tempDownElement,
-            // new MenuButton('Cancel', () => ui.show('homepage')).element,
-            // new MenuButton('Create', () => ui.show('none')).element,
-
         ]);
 
 

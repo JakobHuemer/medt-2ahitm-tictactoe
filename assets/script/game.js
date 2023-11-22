@@ -1,3 +1,5 @@
+import Maps from './maps.js';
+
 export default class Game extends EventTarget {
     _player1;
     _player2;
@@ -11,9 +13,9 @@ export default class Game extends EventTarget {
     constructor(placerName1, playerName2) {
         super();
         this._map = [
-            0, 0, 0,
-            0, 0, 0,
-            0, 0, 0,
+            [0, 0, 0,],
+            [0, 0, 0,],
+            [0, 0, 0,],
         ];
 
         this._player1 = {
@@ -37,8 +39,10 @@ export default class Game extends EventTarget {
             return false;
         }
 
-        if (this.map[field] === 0) {
-            this.map[field] = this.whoHasTurn;
+        console.log(this.getField(field));
+        if (this.getField(field) === 0) {
+            console.log("FIELD:", field)
+            this.setField(field, this.whoHasTurn);
 
             if (this.checkWinner(this.whoHasTurn)) {
                 this.whoHasTurn === 1 ? this.player1.points++ : this.player2.points++;
@@ -48,7 +52,7 @@ export default class Game extends EventTarget {
             this._whoHasTurn = Game.rev(this.whoHasTurn);
 
             if (this.map.filter(item => item === 0).length === 0) {
-                this.onTie()
+                this.onTie();
                 this.dispatchEvent(new CustomEvent('tie'));
             }
 
@@ -56,6 +60,14 @@ export default class Game extends EventTarget {
         } else {
             return false;
         }
+    }
+
+    getField(fieldId) {
+        return this.map[fieldId];
+    }
+
+    setField(fieldId, toSet) {
+        this._map[Math.floor(fieldId / 3)][fieldId % 3] = toSet;
     }
 
 
@@ -67,7 +79,7 @@ export default class Game extends EventTarget {
         ];
 
         for (const check of checks) {
-            if (check.every(index => this.map[index] === id)) {
+            if (check.every(index => this.getField(index) === id)) {
                 return true;
             }
         }
@@ -75,7 +87,10 @@ export default class Game extends EventTarget {
     }
 
     newGame() {
-        this.map = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this.map =[
+            [0, 0, 0,],
+            [0, 0, 0,],
+            [0, 0, 0,],]
         this.whoHasTurn = 1;
     }
 
@@ -100,7 +115,7 @@ export default class Game extends EventTarget {
     }
 
     get map() {
-        return this._map;
+        return [].concat(...this._map);
     }
 
     set map(value) {

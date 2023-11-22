@@ -40,12 +40,6 @@ export default class Ui extends EventTarget {
 
         this.loadingElement = document.querySelector('.ui-loading-screen');
         this.loadingProgressElement = document.querySelector('.progress');
-        // this.loadingElement.classList.add('ui-loading-screen');
-        // this.loadingElement.style.background = config.darkMode ?
-        //     "black" : "#EF323D"
-
-
-        // document.body.appendChild(this.loadingElement)
 
         this.element = document.createElement('div');
         this.element.classList.add('ui-wrapper');
@@ -54,23 +48,6 @@ export default class Ui extends EventTarget {
         }
         this.element.style.zIndex = 10000;
 
-        // this.loadingProgressElement.animate([
-        //     {
-        //         width: "0%"
-        //     },
-        //     {
-        //         width: '60%',
-        //     },
-        //     {
-        //         width: '95%',
-        //     },
-        //     {
-        //         width: '100%',
-        //     }
-        // ], {
-        //     duration: 2300,
-        //     iterations: 1,
-        // })
 
         this.preloadImages(() => {
             this.loadingElement.animate([
@@ -94,21 +71,6 @@ export default class Ui extends EventTarget {
                 this.loadingElement.style.visibility = 'hidden';
             }, 750);
         });
-
-        // setTimeout(() => {
-        //
-        // }, 1900)
-        //
-        // setTimeout(() => {
-        //     this.loadingElement.style.visibility = 'hidden';
-        // }, 2700)
-
-        // setTimeout(() => {
-        //     this.onReady(document.querySelector(".canvas"), () => {
-        //         console.log('MEMO');
-        //         this.loadingElement.style.visibility = 0;
-        //     });
-        // }, 2000)
     }
 
     addPage(name, page) {
@@ -137,7 +99,6 @@ export default class Ui extends EventTarget {
 
     removePage(name) {
         if (this.pages.get(name)) {
-            console.log('.page-nr-' + this.pages.get(name).id);
             document.querySelector('.page-nr-' + this.pages.get(name).id)?.remove();
             this.pages.delete(name);
         }
@@ -180,15 +141,11 @@ export default class Ui extends EventTarget {
             img.onload = () => {
                 done++;
                 this.loadingProgress = done / total;
-                // console.log(this._loadingProgress * 100);
                 this.loadingProgressElement.style.width = (this._loadingProgress * 100) + '%';
                 if (done >= total) {
-                    console.log('FERTIG');
                     callback();
                 }
             };
-            // done++;
-            // callback()
 
             img.src = item;
         });

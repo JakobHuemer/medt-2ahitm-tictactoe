@@ -1,7 +1,7 @@
 export default {
-    musicVolume: 0.0,
+    musicVolume: 0.5,
     volume: 0.1,
-    tickSpeed: 50,
+    tickSpeed: 20,
     TICKS_PER_SECOND: 20,
     pistonTickDuration: 3,
     canvasHeight: 7,
@@ -28,15 +28,11 @@ export default {
     startPageAfterReload: 'homepage',
 
     server: 'https://tttjakki.jstjxel.de',
-    // server: 'http://localhost:3030',
     playerHeadApi: 'https://mc-heads.net/avatar/',
 
     audioAlertBoxShown: false,
     texturesChanged: false,
 
     currentlyPlayingBackgroundMusic: null,
-
-//     minecraft loading screen
-//     https://www.youtube.com/watch?v=Mxlttu5r6qM
 
 };

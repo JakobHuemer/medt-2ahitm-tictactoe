@@ -29,10 +29,6 @@ export default class Block extends EventTarget {
         this._facing = facing;
         this._lvl = lvl;
 
-        // console.log('-------------------------------');
-        // console.log(document.createElement('div'));
-        // console.log('ELEMENT');
-        // console.log(element);
         if (element === null || element === undefined) {
             this._element = document.createElement('img');
 
@@ -58,9 +54,7 @@ export default class Block extends EventTarget {
 
             this._element.setAttribute('loading', 'lazy');
 
-            // console.log('This element created');
         } else {
-            // console.log('This element already exists');
             this._element = element;
         }
 
@@ -80,7 +74,6 @@ export default class Block extends EventTarget {
                 this._element.src = "/assets/img/missing_texture.png"
             }
         }
-        // console.log(pos)
     }
 
     delete() {
@@ -138,19 +131,6 @@ export default class Block extends EventTarget {
             }, config.TICKS_PER_SECOND / config.tickSpeed * (1000 / config.tickSpeed));
 
         } else {
-
-            // console.log(animationProperties);
-            // console.log('Animspeed: ' + animSpeed);
-
-
-            // this._element.animate([animationProperties], {
-            //     fill: 'forwards',
-            //     duration: animSpeed,
-            //     iterations: 1,
-            //     easing: 'linear',
-            // });
-
-
             this._element.style[prop] = propVal / canvasDimension * 100 + '%';
         }
 
@@ -207,11 +187,9 @@ export class Observer extends Block {
         super(pos, 'observer_back', x, y, facing, lvl, element);
         this._state = state;
 
-        // console.log(this._element);
     }
 
     trigger() {
-        // console.log('TRIGGER: ' + (config.tickSpeed / config.ticksPerSecond * 100));
         this._element.src = '/assets/img/' + this._blockType + '_on' + config.blockFileExtension;
 
         clearInterval(this.triggerTimeout);
@@ -242,8 +220,6 @@ export class Piston extends Block {
         this._element.style.transform = 'translateY(-50%) ' + this._element.style.transform;
 
         this._element.setAttribute('extended', this._extended);
-        // this._element.setAttribute('extended', "true");
-
         this._element.style.width = (parseInt(this._element.style.width) * 2).toString();
         this._element.style.transformOrigin = '50% 75%';
 //                                                                                                                              duration of one tick in ms
@@ -273,13 +249,9 @@ export class Piston extends Block {
             const extendedAt = (1000 / config.tickSpeed) * ticks;
             const retractAt = config.TICKS_PER_SECOND / config.tickSpeed * (1000 / config.tickSpeed) * config.pistonTickDuration;
 
-            // console.log('Retract: ' + retractAt + '\nExtend: ' + extendedAt);
-
             setTimeout(() => {
                 this._element.querySelector('.piston-extender').style.transition = `none`;
             }, extendedAt);
-
-            // console.log('TICKS: ' + config.TICKS_PER_SECOND / config.tickSpeed * (1000 / config.tickSpeed) * ticks);
 
             setTimeout(() => {
                 this.retract();
@@ -369,13 +341,6 @@ export class HoverBlock extends Block {
         } else {
             texture = config[playerBlock];
         }
-        //
-        // if (player === 'A') {
-        //     texture = config.player1Block;
-        // } else {
-        //     texture = config.player2Block;
-        // }
-
         this._element.classList.remove('hover-block-disabled');
         this._element.src = texture
     }
