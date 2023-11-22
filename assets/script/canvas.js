@@ -53,14 +53,8 @@ export default class Canvas {
     }
 
     reloadTextures() {
-        console.log('RELOADING TEXTURES');
-
-        console.log(this.player1Blocks)
-        console.log("-----------------")
-        console.log(this.player2Blocks)
 
         for (let el of this.player1Blocks) {
-            console.log(getTextures('player1Block'));
             el.element.src = getTextures('player1Block');
         }
         for (let el of this.player2Blocks) {

@@ -26,6 +26,10 @@ export default class Ui extends EventTarget {
         '/assets/img/gui/title-light.png',
     ];
 
+
+    rematch = () => {}
+    leave = () => {}
+
     pagesToObjects;
 
     constructor(gameManager) {
@@ -110,30 +114,31 @@ export default class Ui extends EventTarget {
     addPage(name, page) {
         id++;
         let el = page.element;
-        page.id = id;
+
+        if (this.pages.get(name)) {
+            document.querySelector('page-nr-' + this.pages.get(name).id);
+        } else {
+            page.id = id;
+        }
+
         el.classList.add('page-nr-' + id);
-        this.pages.set(name, el);
-        this.pagesToObjects.set(el, page);
+        this.pages.set(name, page);
+
         this.element.appendChild(el);
+
 
         if (page instanceof EventTarget) {
             page.addEventListener('reloadUI', () => {
                 this.dispatchEvent(new Event('reloadUI'));
+
             });
         }
     }
 
     removePage(name) {
-        console.log("REMOVING ")
-        console.log("REMOVING ")
-        console.log("REMOVING ")
-        console.log("REMOVING ")
-        console.log("REMOVING ")
-        console.log(this.pagesToObjects);
         if (this.pages.get(name)) {
-            console.log(this.pages);
-            console.log('REMOVING', this.pages.get(name));
-            document.querySelectorAll('.page-nr-' + this.pages.get(name).id).forEach(item => item.remove());
+            console.log('.page-nr-' + this.pages.get(name).id);
+            document.querySelector('.page-nr-' + this.pages.get(name).id)?.remove();
             this.pages.delete(name);
         }
     }
@@ -142,16 +147,14 @@ export default class Ui extends EventTarget {
         for (const [name, page] of this.pages.entries()) {
             if (name === pageName) {
 
-                setTimeout(() => page.style.visibility = 'visible', 100);
+                setTimeout(() => page.element.style.visibility = 'visible', 100);
                 this.currentPage = pageName;
             } else
-                page.style.visibility = 'hidden';
+                page.element.style.visibility = 'hidden';
         }
     }
 
     setBackground(img, size, xOffset, yOffset) {
-        console.log('DISPLAY IMAGE', img);
-        console.log('TYPE', config.backgroundBlockType);
         if (config.backgroundBlockType === 'block')
             this.element.style.backgroundImage = `url(${ config.server }/images/${ img }.png)`;
         else if (config.backgroundBlockType === 'head')

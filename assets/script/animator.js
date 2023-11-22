@@ -11,7 +11,7 @@ export default class Animator extends EventTarget {
         this.canvas = canvas;
     }
 
-    animate(animation, player, name = "") {
+    animate(animation, player, name = '', doneCallback) {
 
         const keyFrames = animation.frames;
         let maxTime = 0;
@@ -28,7 +28,10 @@ export default class Animator extends EventTarget {
         }
 
         setTimeout(() => {
-            this.dispatchEvent(new CustomEvent('animationdone', { detail: { animationName: name } }));
+            // this.dispatchEvent(new CustomEvent('animationdone', { detail: { animationName: name } }));
+            if (typeof doneCallback === 'function') {
+                doneCallback();
+            }
         }, (maxTime + 4) * config.TICKS_PER_SECOND / config.tickSpeed * (1000 / config.tickSpeed));
     }
 
@@ -96,7 +99,7 @@ export default class Animator extends EventTarget {
                 // console.log(player);
                 // console.log(toAnimatePlayer);
                 if (player === 'A' && toAnimatePlayer === 'A') {
-                    itemName = transferredName.replace(/A%/g, "A");
+                    itemName = transferredName.replace(/A%/g, 'A');
                 } else if (player === 'A' && toAnimatePlayer === 'B') {
                     itemName = transferredName.replace(/B%/g, 'B');
                 } else if (player === 'B' && toAnimatePlayer === 'A') {

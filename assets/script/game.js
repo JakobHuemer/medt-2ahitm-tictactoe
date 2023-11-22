@@ -5,6 +5,9 @@ export default class Game extends EventTarget {
     _map;
     _whoHasTurn;
 
+    onTie = () => {}
+    onWin = (player) => {}
+
     constructor(placerName1, playerName2) {
         super();
         this._map = [
@@ -30,8 +33,6 @@ export default class Game extends EventTarget {
 
 
     place(field) {
-        console.log('PLACE');
-        console.log("----------------------------------------------------------")
         if (this.whoHasTurn === undefined) {
             return false;
         }
@@ -41,26 +42,14 @@ export default class Game extends EventTarget {
 
             if (this.checkWinner(this.whoHasTurn)) {
                 this.whoHasTurn === 1 ? this.player1.points++ : this.player2.points++;
+                this.onWin(this.whoHasTurn === 1 ? this.player1 : this.player2);
                 this.dispatchEvent(new CustomEvent('win', { detail: this.whoHasTurn === 1 ? this.player1 : this.player2 }));
-                console.log("DISPATCHING EVENT ")
-                console.log("DISPATCHING EVENT ")
-                console.log("DISPATCHING EVENT ")
-                console.log("DISPATCHING EVENT ")
-                console.log("DISPATCHING EVENT ")
-                console.log("DISPATCHING EVENT ")
-                console.log("DISPATCHING EVENT ")
             }
             this._whoHasTurn = Game.rev(this.whoHasTurn);
 
             if (this.map.filter(item => item === 0).length === 0) {
+                this.onTie()
                 this.dispatchEvent(new CustomEvent('tie'));
-                console.log("DISPATCHING TIE")
-                console.log("DISPATCHING TIE")
-                console.log("DISPATCHING TIE")
-                console.log("DISPATCHING TIE")
-                console.log("DISPATCHING TIE")
-                console.log("DISPATCHING TIE")
-                console.log("DISPATCHING TIE")
             }
 
             return true;

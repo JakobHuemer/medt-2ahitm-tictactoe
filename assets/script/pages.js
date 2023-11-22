@@ -246,7 +246,6 @@ export class LocalGamePage extends Page {
         tempDownElement.appendChild(
             new MenuButton('Create', () => {
                 // config.redirectAfterSettings = 'none';
-                console.log("DISPATCH LOCAL NEW GAME")
                 this.ui.dispatchEvent(new Event('local'));
             }).element,
         );
@@ -294,10 +293,10 @@ export class PostGamePage extends Page {
             PostGamePage.createResultEntry(ui, "player1"),
             PostGamePage.createResultEntry(ui, "player2"),
             new MenuButton('Rematch', () => {
-                this.ui.dispatchEvent(new Event('rematch'));
+                this.ui.rematch();
             }),
             new MenuButton("Leave", () => {
-                this.ui.dispatchEvent(new Event('leave'));
+                this.ui.leave();
             })
         ]);
 
