@@ -62,9 +62,9 @@ export class HomePage extends Page {
     constructor(ui) {
 
         let img = document.createElement('img');
-        img.src = '/assets/img/gui/title-' + (config.darkMode ? 'dark' : 'light') + '.png';
+        img.src = './assets/img/gui/title-' + (config.darkMode ? 'dark' : 'light') + '.png';
 
-        super(ui, `<img src='/assets/img/gui/title-${ config.darkMode ? 'dark' : 'light' }.png' alt="Minecraft Title">`, [
+        super(ui, `<img src='./assets/img/gui/title-${ config.darkMode ? 'dark' : 'light' }.png' alt="Minecraft Title">`, [
             document.createElement('div'),
             document.createElement('div'),
             document.createElement('div'),
@@ -98,7 +98,7 @@ export class SettingsPage extends Page {
             }, 0.01),
             new MenuSlider('Tickspeed: %v tps', 'tickSpeed', 1, 50, () => {
             }),
-            new MenuButton('Appearance', () => ui.showPage('appearance')),
+            // new MenuButton('Appearance', () => ui.showPage('appearance')),
 
             new MenuButton('Done', () => ui.showPage(config.redirectAfterSettings)),
         ]);
@@ -152,7 +152,7 @@ export class AppearancePage extends Page {
         AppearancePage.updateImage(img, configTexture);
 
         img.addEventListener('error', e => {
-            e.target.src = '/assets/img/missing_texture.png';
+            e.target.src = './assets/img/missing_texture.png';
         });
 
         const res = await fetch(config.server + '/texture?q=');

@@ -1,16 +1,16 @@
 @font-face {
     font-family: 'Minecraft-Regular';
-    src: url('/assets/font/minecraft/Minecraft-Regular.ttf.woff') format('woff'),
-    url('/assets/font/minecraft/Minecraft-Regular.ttf.svg#Minecraft-Regular') format('svg'),
-    url('/assets/font/minecraft/Minecraft-Regular.ttf.eot'),
-    url('/assets/font/minecraft/Minecraft-Regular.ttf.eot?#iefix') format('embedded-opentype');
+    src: url('../font/minecraft/Minecraft-Regular.ttf.woff') format('woff'),
+    url('../font/minecraft/Minecraft-Regular.ttf.svg#Minecraft-Regular') format('svg'),
+    url('../font/minecraft/Minecraft-Regular.ttf.eot'),
+    url('../font/minecraft/Minecraft-Regular.ttf.eot?#iefix') format('embedded-opentype');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Mojang";
-    src: url("/assets/font/mojang/fs-mojang-studios-2.otf") format("opentype");
+    src: url("../font/mojang/fs-mojang-studios-2.otf") format("opentype");
 }
 
 
@@ -18,7 +18,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: url("/assets/img/ico/crosshair-icon.png") 9 9, crosshair;
+    cursor: url("../img/ico/crosshair-icon.png") 9 9, crosshair;
     font-family: "Minecraft-Regular", "DejaVu Sans", sans-serif;
     caret-shape: block;
     caret: orange;
@@ -42,7 +42,7 @@
 
     overflow: hidden;
 
-    cursor: url("/assets/img/ico/cursor.png") 0 0, default;
+    cursor: url("../img/ico/cursor.png") 0 0, default;
 
     background: #EF323D;
 
@@ -51,7 +51,7 @@
     }
 
     & > * {
-        cursor: url("/assets/img/ico/cursor.png") 0 0, default;
+        cursor: url("../img/ico/cursor.png") 0 0, default;
 
     }
 
@@ -117,7 +117,7 @@
 
 
 h1, h2, h3, h4, h5, h6, span, p {
-    cursor: url("/assets/img/ico/text-cursor-2.png") 9 12, text;
+    cursor: url("../img/ico/text-cursor-2.png") 9 12, text;
 }
 
 .menu-title {
@@ -247,7 +247,7 @@ h1 {
     }
 
     .hover-block-disabled {
-        cursor: url("/assets/img/ico/crosshair-icon_not-allowed.png") 9 9, crosshair;
+        cursor: url("../img/ico/crosshair-icon_not-allowed.png") 9 9, crosshair;
     }
 
 }
@@ -257,7 +257,7 @@ h1 {
     position: relative;
 
     z-index: 10000;
-    background: url("/assets/img/gui/button.png") center / contain no-repeat;
+    background: url("../img/gui/button.png") center / contain no-repeat;
     aspect-ratio: 10 / 1;
     image-rendering: pixelated;
 
@@ -267,14 +267,14 @@ h1 {
 
     isolation: isolate;
 
-    cursor: url("/assets/img/ico/cursor.png") 0 0, default;
+    cursor: url("../img/ico/cursor.png") 0 0, default;
 
     &.dark {
-        background: url("/assets/img/gui/button-dark.png") center / contain no-repeat;
+        background: url("../img/gui/button-dark.png") center / contain no-repeat;
     }
 
     & * {
-        cursor: url("/assets/img/ico/cursor.png") 0 0, default;
+        cursor: url("../img/ico/cursor.png") 0 0, default;
     }
 
     & > span {
@@ -282,7 +282,7 @@ h1 {
         pointer-events: none;
 
         z-index: 100;
-        cursor: url("/assets/img/ico/cursor.png") 0 0, default;
+        cursor: url("../img/ico/cursor.png") 0 0, default;
         font-size: 1.4rem;
 
         text-shadow: 2px 2px 0 black;
@@ -295,31 +295,31 @@ h1 {
 
 
     &:hover {
-        background: url("/assets/img/gui/button-active.png") center / contain no-repeat;
+        background: url("../img/gui/button-active.png") center / contain no-repeat;
     }
 
     &.dark:hover {
-        background: url("/assets/img/gui/button-active-dark.png") center / contain no-repeat;
+        background: url("../img/gui/button-active-dark.png") center / contain no-repeat;
     }
 
     &.menu-slider {
         -webkit-appearance: none;
         position: relative;
 
-        background: url("/assets/img/gui/button-slider.png") center / contain no-repeat;
+        background: url("../img/gui/button-slider.png") center / contain no-repeat;
 
         &.dark {
-            background: url("/assets/img/gui/button-slider-dark.png") center / contain no-repeat;
+            background: url("../img/gui/button-slider-dark.png") center / contain no-repeat;
         }
 
         &:hover .menu-slider-slider::-moz-range-thumb {
             z-index: -1;
-            background: url("/assets/img/gui/button-slider-slider-active.png") center / contain no-repeat;
+            background: url("../img/gui/button-slider-slider-active.png") center / contain no-repeat;
         }
 
         &.dark:hover .menu-slider-slider::-moz-range-thumb {
 
-            background: url("/assets/img/gui/button-slider-slider-active-dark.png") center / contain no-repeat;
+            background: url("../img/gui/button-slider-slider-active-dark.png") center / contain no-repeat;
         }
 
 
@@ -335,7 +335,7 @@ h1 {
             left: 0;
             top: 0;
 
-            background: url("/assets/img/gui/button-slider.png") center / contain no-repeat;
+            background: url("../img/gui/button-slider.png") center / contain no-repeat;
             /*background: red;*/
             /*border: 10px solid red;*/
 
@@ -346,7 +346,7 @@ h1 {
 
                 &::-moz-range-thumb,
                 &::-webkit-slider-thumb {
-                    background: url("/assets/img/gui/button-slider-slider-active.png") center / contain no-repeat;
+                    background: url("../img/gui/button-slider-slider-active.png") center / contain no-repeat;
                 }
             }
 
@@ -362,17 +362,17 @@ h1 {
                 width: unset;
                 border: none;
                 border-radius: unset;
-                background: url("/assets/img/gui/button-slider-slider.png") center / contain no-repeat;
+                background: url("../img/gui/button-slider-slider.png") center / contain no-repeat;
             }
         }
 
         &.dark .menu-slider-slider {
-            background: url("/assets/img/gui/button-slider-dark.png") center / contain no-repeat;
+            background: url("../img/gui/button-slider-dark.png") center / contain no-repeat;
 
 
             &::-moz-range-thumb,
             &::-webkit-slider-thumb {
-                background: url("/assets/img/gui/button-slider-slider-dark.png") center / contain no-repeat;
+                background: url("../img/gui/button-slider-slider-dark.png") center / contain no-repeat;
 
             }
         }
@@ -391,10 +391,10 @@ h1 {
 
     /*background: purple;*/
     image-rendering: pixelated;
-    cursor: url("/assets/img/ico/cursor.png") 0 0, default;
+    cursor: url("../img/ico/cursor.png") 0 0, default;
 
     & * {
-        cursor: url("/assets/img/ico/cursor.png") 0 0, default;
+        cursor: url("../img/ico/cursor.png") 0 0, default;
     }
 
     .ui-page {
@@ -487,10 +487,10 @@ h1 {
     aspect-ratio: 10 / 1;
     outline: none;
     border: none;
-    background: url("/assets/img/gui/button-slider.png") center / contain no-repeat;
+    background: url("../img/gui/button-slider.png") center / contain no-repeat;
 
 
-    cursor: url("/assets/img/ico/text-cursor.png") 9 12, text;
+    cursor: url("../img/ico/text-cursor.png") 9 12, text;
     caret-shape: underscore;
 
     isolation: isolate;
@@ -499,11 +499,11 @@ h1 {
 
     &.dark {
 
-        background: url("/assets/img/gui/button-slider-dark.png") center / contain no-repeat;
+        background: url("../img/gui/button-slider-dark.png") center / contain no-repeat;
     }
 
     & * {
-        cursor: url("/assets/img/ico/text-cursor.png") 9 12, text;
+        cursor: url("../img/ico/text-cursor.png") 9 12, text;
 
         caret-shape: underscore;
     }

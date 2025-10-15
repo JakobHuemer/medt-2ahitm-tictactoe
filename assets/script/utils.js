@@ -31,7 +31,7 @@ export async function testAudio(path) {
  */
 export async function play(filepath, volumeOf = 'volume', callback = () => {}) {
 
-    filepath = '/assets/audio/' + filepath + '.' + getSupportedAudio();
+    filepath = './assets/audio/' + filepath + '.' + getSupportedAudio();
 
     try {
         const audio = new Audio(filepath);
@@ -75,7 +75,7 @@ export function loadUI(gm) {
 
     UI.addPage('homepage', new HomePage(UI));
     UI.addPage('settings', new SettingsPage(UI));
-    UI.addPage('appearance', new AppearancePage(UI));
+    // UI.addPage('appearance', new AppearancePage(UI)); // appearance page is broken without external api service
     UI.addPage('local', new LocalGamePage(UI));
     UI.showPage('homepage');
 

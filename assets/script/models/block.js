@@ -47,7 +47,7 @@ export default class Block extends EventTarget {
 
 
             } else {
-                this._element.src = '/assets/img/' + blockType + config.blockFileExtension;
+                this._element.src = './assets/img/' + blockType + config.blockFileExtension;
                 this._element.alt = blockType;
             }
 
@@ -71,7 +71,7 @@ export default class Block extends EventTarget {
         this._element.setAttribute('draggable', false);
         this._element.onerror = () => {
             if (this._element instanceof HTMLImageElement) {
-                this._element.src = "/assets/img/missing_texture.png"
+                this._element.src = "./assets/img/missing_texture.png"
             }
         }
     }
@@ -190,11 +190,11 @@ export class Observer extends Block {
     }
 
     trigger() {
-        this._element.src = '/assets/img/' + this._blockType + '_on' + config.blockFileExtension;
+        this._element.src = './assets/img/' + this._blockType + '_on' + config.blockFileExtension;
 
         clearInterval(this.triggerTimeout);
         this.triggerTimeout = setTimeout(() => {
-            this._element.src = 'assets/img/' + this._blockType + config.blockFileExtension;
+            this._element.src = './assets/img/' + this._blockType + config.blockFileExtension;
         }, config.TICKS_PER_SECOND / config.tickSpeed * 100);
 
     }
@@ -211,8 +211,8 @@ export class Piston extends Block {
 
 
         this._element.innerHTML = `
-            <img loading="lazy" class="piston-base" src="/assets/img/piston_base.png" alt="piston-base">
-            <img loading="lazy" class="piston-extender" src="/assets/img/piston_extender${ this._sticky ? '_sticky.png' : '.png' }" alt="piston-extender">
+            <img loading="lazy" class="piston-base" src="./assets/img/piston_base.png" alt="piston-base">
+            <img loading="lazy" class="piston-extender" src="./assets/img/piston_extender${ this._sticky ? '_sticky.png' : '.png' }" alt="piston-extender">
         `;
 
         this._element.style.height = 1 / config.canvasHeight * 100 * 2 + '%';
@@ -319,7 +319,7 @@ export class HoverBlock extends Block {
 
     setDisabled() {
         this._element.classList.add('hover-block-disabled');
-        this._element.src = '/assets/img/barrier.png';
+        this._element.src = './assets/img/barrier.png';
     }
 
 

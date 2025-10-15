@@ -16,10 +16,10 @@ export default {
     player1Name: 'Player 1',
     player2Name: 'Player 2',
 
-    player1Block: 'blue_concrete',
+    player1Block: 'blue_glazed_terracotta',
     player1BlockType: 'block',
 
-    player2Block: 'yellow_concrete',
+    player2Block: 'black_glazed_terracotta',
     player2BlockType: 'block',
     displayOwnConfigurationOnPublic: false,
 
@@ -27,7 +27,7 @@ export default {
     redirectAfterSettings: 'homepage',
     startPageAfterReload: 'homepage',
 
-    server: 'https://tttjakki.jstjxel.de',
+    server: window.location.href,
     playerHeadApi: 'https://mc-heads.net/avatar/',
 
     audioAlertBoxShown: false,

@@ -10,20 +10,20 @@ export default class Ui extends EventTarget {
     pages;
     _loadingProgress;
     preloadElements = [
-        '/assets/img/gui/button.png',
-        '/assets/img/gui/button-dark.png',
-        '/assets/img/gui/button-active.png',
-        '/assets/img/gui/button-active-dark.png',
-        '/assets/img/gui/button-slider.png',
-        '/assets/img/gui/button-slider-dark.png',
-        '/assets/img/gui/button-slider-slider.png',
-        '/assets/img/gui/button-slider-slider-dark.png',
-        '/assets/img/gui/button-slider-slider-active.png',
-        '/assets/img/gui/button-slider-slider-active-dark.png',
-        '/assets/img/gui/tictactoe-logo.jpg',
-        '/assets/img/gui/tictactoe-logo-tiny.png',
-        '/assets/img/gui/title-dark.png',
-        '/assets/img/gui/title-light.png',
+        './assets/img/gui/button.png',
+        './assets/img/gui/button-dark.png',
+        './assets/img/gui/button-active.png',
+        './assets/img/gui/button-active-dark.png',
+        './assets/img/gui/button-slider.png',
+        './assets/img/gui/button-slider-dark.png',
+        './assets/img/gui/button-slider-slider.png',
+        './assets/img/gui/button-slider-slider-dark.png',
+        './assets/img/gui/button-slider-slider-active.png',
+        './assets/img/gui/button-slider-slider-active-dark.png',
+        './assets/img/gui/tictactoe-logo.jpg',
+        './assets/img/gui/tictactoe-logo-tiny.png',
+        './assets/img/gui/title-dark.png',
+        './assets/img/gui/title-light.png',
     ];
 
 
