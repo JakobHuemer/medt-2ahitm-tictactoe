@@ -13,4 +13,11 @@ to push a block and not pull it back.
 
 ## How to run
 
+either go to jakobhuemer.github.io/medt-2ahitm-tictactoe
 
+or clone the repo and host with a server
+
+```shell
+$ git clone github.com/jakobhuemer/medt-2ahitm-tictactoe
+$ npx live-server .
+```
