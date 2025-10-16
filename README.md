@@ -13,7 +13,7 @@ to push a block and not pull it back.
 
 ## How to run
 
-either go to [jakobhuemer.github.io/medt-2ahitm-tictactoe](jakobhuemer.github.io/medt-2ahitm-tictactoe)
+either go to [jakobhuemer.github.io/medt-2ahitm-tictactoe](https://jakobhuemer.github.io/medt-2ahitm-tictactoe)
 
 or clone the repo and host with a server
 
